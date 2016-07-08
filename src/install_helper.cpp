@@ -12,9 +12,30 @@ using std::string;
 using std::exception;
 using std::runtime_error;
 
+bool InstallHelper::instance_poped = false;
+InstallHelper* InstallHelper::instance = NULL;
+
 const string InstallHelper::UBUNTU = "ubuntu";
 const string InstallHelper::MAC = "mac";
 const string InstallHelper::UNKNOWN = "unknown";
+
+InstallHelper::InstallHelper() {}
+
+InstallHelper::~InstallHelper()
+{
+    instance_poped = false;
+}
+
+InstallHelper* InstallHelper::get_instance()
+{
+    if ( !instance_poped )
+    {
+        instance_poped = true;
+        instance = new InstallHelper();
+    }
+
+    return instance;
+}
 
 const string InstallHelper::xnix_cmd_exec( const char* cmd )
 {
