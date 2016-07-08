@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <stdlib.h>
 #include "install_helper.h"
 
 using std::cout;
@@ -87,4 +88,16 @@ const string InstallHelper::get_os()
 
         return UNKNOWN;
     }
+}
+
+bool InstallHelper::terminate( string reason /* = string("") */ )
+{
+    if ( !reason.empty() )
+        cout << "reason : " << reason << endl;
+
+    cout << "Something is invalid for install" << endl;
+    cout << "Terminate continue install ..." << endl;
+    cout << "exit(-1)" << endl;
+
+    exit(-1);
 }

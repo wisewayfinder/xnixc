@@ -13,4 +13,5 @@ private:
 
 public:
     static vector< string > str_split( const string& str, char delim );
+    static string remove_lf( string str );
 };

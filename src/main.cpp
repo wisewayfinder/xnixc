@@ -1,14 +1,12 @@
 #include <iostream>
-#include "install_helper.h"
+#include "clang_installer.h"
 
 using std::cout;
 using std::endl;
 
 int main()
 {
-    InstallHelper install_helper;
-
-    cout << install_helper.get_os() << endl;
+    ClangInstaller::install_clang();
 
     return(0);
 }

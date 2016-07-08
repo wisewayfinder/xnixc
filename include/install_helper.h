@@ -14,4 +14,5 @@ public:
 
     static const string xnix_cmd_exec( const char* cmd );
     static const string get_os();
+    static bool terminate( string reason = string("") );
 };

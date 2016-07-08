@@ -28,3 +28,13 @@ vector< string > StrUtil::str_split( const string& str, char delim )
 
     return elems;
 }
+
+string StrUtil::remove_lf( string str )
+{
+    if ( !str.empty() && str[str.length() - 1] == '\n' )
+    {
+        str.erase( str.length() - 1 );
+    }
+
+    return str;
+}
