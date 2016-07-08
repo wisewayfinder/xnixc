@@ -3,3 +3,4 @@ cscope*
 mkcscope*
 tags
 *.swp
+*.bak
