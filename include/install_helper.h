@@ -6,18 +6,12 @@ class InstallHelper
 {
 private:
     InstallHelper();
-    static bool instance_poped;
-    static InstallHelper* instance;
 
+public:
     static const string UBUNTU;
     static const string MAC;
     static const string UNKNOWN;
 
-
-public:
-    virtual ~InstallHelper();
-    static InstallHelper* get_instance();
-
-    const string xnix_cmd_exec( const char* cmd );
-    const string get_os();
+    static const string xnix_cmd_exec( const char* cmd );
+    static const string get_os();
 };
