@@ -30,10 +30,16 @@ const string InstallHelper::xnix_cmd_exec( const char* cmd )
 
     try
     {
+        cout << "******** EXECUTE : " << cmd << " ..." << " ********" << endl;
+
         while ( !feof( pipe ) )
         {
             if ( fgets( buffer, BUFF_SIZE, pipe ) != NULL )
+            {
+                cout << buffer;
                 result += buffer;
+            }
+
         }
     }
     catch ( runtime_error rte )
