@@ -66,6 +66,9 @@ bool XnixcInstaller::install_xnixc()
     cmd = "cp ../resource/xnixc/xnixc ~/.xnixc";
     InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
+    cmd = "chmod 755 ~/.xnixc/xnixc";
+    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+
     cmd = "cp ../resource/xnixc/*.* ~/.xnixc/resource";
     InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
