@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include "install_helper.h"
 
 using std::cout;
@@ -16,6 +16,8 @@ InstallHelper::InstallHelper() {}
 const string InstallHelper::UBUNTU = "ubuntu";
 const string InstallHelper::MAC = "mac";
 const string InstallHelper::UNKNOWN = "unknown";
+
+const string InstallHelper::FAILED = "failed";
 
 const string InstallHelper::xnix_cmd_exec( const char* cmd )
 {
@@ -41,29 +43,29 @@ const string InstallHelper::xnix_cmd_exec( const char* cmd )
             }
 
         }
+
+        int status = pclose( pipe );
+        status = WEXITSTATUS( status );
+
+        cout << status << endl;
+        if ( status != 0 )
+            throw runtime_error( string(cmd) );
     }
     catch ( runtime_error rte )
     {
-        cout << "xnix command |" << cmd << "| failed during runtime..." << endl;
+        cout << "xnix command '" << cmd << "' failed during runtime ..." 
+            << endl;
         cout << rte.what() << endl;
-        cout << "Termiated...(-1)" << endl;
 
-        pclose( pipe );
-
-        return string("");
+        return FAILED;
     }
     catch ( exception exc )
     {
-        cout << "xnix command |" << cmd << "| is failed..." << endl;
+        cout << "xnix command '" << cmd << "' is failed ..." << endl;
         cout << exc.what() << endl;
-        cout << "Termiated...(-1)" << endl;
 
-        pclose( pipe );
-
-        return string("");
+        return FAILED;
     }
-
-    pclose( pipe );
 
     return result;
 }
@@ -96,13 +98,24 @@ const string InstallHelper::get_os()
     }
 }
 
+void InstallHelper::examine_os( string err_msg )
+{
+    if ( get_os() == UNKNOWN )
+    {
+        terminate( err_msg );
+    }
+}
+
 bool InstallHelper::terminate( string reason /* = string("") */ )
 {
     if ( !reason.empty() )
-        cout << "reason : " << reason << endl;
+    {
+        cout << "InstallHelper terminate install ... !!!" << endl;
+        cout << "    reason : " << reason << endl;
+    }
 
     cout << "Something is invalid for install" << endl;
-    cout << "Terminate continue install ..." << endl;
+    cout << "Terminate install ..." << endl;
     cout << "exit(-1)" << endl;
 
     exit(-1);

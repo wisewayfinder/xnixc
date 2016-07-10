@@ -29,6 +29,24 @@ vector< string > StrUtil::str_split( const string& str, char delim )
     return elems;
 }
 
+string StrUtil::str_replace( string str, const string& tar, const string& val )
+{
+    string::size_type offset = 0;
+
+    while ( true )
+    {
+        offset = str.find(tar, offset);
+
+        if ( string::npos == offset )
+            break;
+
+        str.replace( offset, tar.length(), val );
+        offset += val.length();
+    }
+
+    return str;
+}
+
 string StrUtil::remove_lf( string str )
 {
     if ( !str.empty() && str[str.length() - 1] == '\n' )

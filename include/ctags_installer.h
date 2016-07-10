@@ -1,8 +1,6 @@
 class CtagsInstaller
 {
-private:
-    static bool check_ctags();
-
 public:
+    static bool check_ctags();
     static bool install_ctags();
 };

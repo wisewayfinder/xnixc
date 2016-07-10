@@ -7,16 +7,12 @@ using std::endl;
 
 bool CMakeInstaller::check_c_make()
 {
-    if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
-    {
-        InstallHelper::terminate( "To check CMake installed, " \
-                "this OS is invalid");
-    }
+    InstallHelper::examine_os( "To check CMake installed, this OS is invalid" );
 
     string cmd = "which cmake";
     string result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
-    if ( !result.empty() )
+    if ( result != InstallHelper::FAILED )
         return true;
     else
         return false;
@@ -24,10 +20,7 @@ bool CMakeInstaller::check_c_make()
 
 bool CMakeInstaller::install_c_make()
 {
-    if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
-    {
-        InstallHelper::terminate( "To install CMake, this OS is invalid" );
-    }
+    InstallHelper::examine_os( "To install CMake, this OS is invalid" );
 
     if ( check_c_make() )
     {

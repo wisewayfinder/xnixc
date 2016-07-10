@@ -7,11 +7,8 @@ using std::endl;
 
 bool CscopeInstaller::check_cscope()
 {
-    if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
-    {
-        InstallHelper::terminate( "To check Cscope installed, " \
-               "this OS is invalid" );
-    }
+    InstallHelper::examine_os( "To check Cscope installed, this OS is " \
+            "invalid" );
 
     string cmd;
     string result;
@@ -19,7 +16,7 @@ bool CscopeInstaller::check_cscope()
     cmd = "which cscope";
     result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
-    if ( !result.empty() )
+    if ( result != InstallHelper::FAILED )
         return true;
     else
         return false;
@@ -27,15 +24,12 @@ bool CscopeInstaller::check_cscope()
 
 bool CscopeInstaller::install_cscope()
 {
-    if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
-    {
-        InstallHelper::terminate( "To install Cscope, this OS is invalid" );
-    }
+    InstallHelper::examine_os( "To install Cscope, this OS in invalid" );
 
     if ( check_cscope() )
     {
         cout << "Cscope is already installed ..." << endl;
-        cout << "Cscope install Complete ..." << endl;
+        cout << "Cscope install Complete" << endl;
 
         return true;
     }

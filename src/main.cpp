@@ -3,9 +3,7 @@
 #include "c_make_installer.h"
 #include "ctags_installer.h"
 #include "cscope_installer.h"
-
-using std::cout;
-using std::endl;
+#include "vim_manager.h"
 
 int main()
 {
@@ -13,6 +11,7 @@ int main()
     CMakeInstaller::install_c_make();
     CtagsInstaller::install_ctags();
     CscopeInstaller::install_cscope();
+    VimManager::vim_configure();
 
     return(0);
 }

@@ -12,16 +12,12 @@ using std::vector;
 
 bool ClangInstaller::check_clang()
 {
-    if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
-    {
-        InstallHelper::terminate( "To check Clang installed, " \
-                "this OS is invalid" );
-    }
+    InstallHelper::examine_os( "To check Clang installed, this OS is invalid");
 
     string cmd = "which clang";
     string result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
-    if ( !result.empty() )
+    if ( result != InstallHelper::FAILED )
     {
         return true;
     }
@@ -52,15 +48,12 @@ bool ClangInstaller::check_clang()
 
 bool ClangInstaller::install_clang()
 {
-    if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
-    {
-        InstallHelper::terminate( "To install Clang, this OS is invalid" );
-    }
+    InstallHelper::examine_os( "To install Clang, this OS is invalid" );
 
     if ( check_clang() )
     {
         cout << "Clang is already installed ..." << endl;
-        cout << "Clang install complete ..." << endl;
+        cout << "Clang install complete" << endl;
 
         return true;
     }

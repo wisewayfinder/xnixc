@@ -7,11 +7,7 @@ using std::endl;
 
 bool CtagsInstaller::check_ctags()
 {
-    if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
-    {
-        InstallHelper::terminate( "To check Ctags installed, " \
-               "this OS is invalid" );
-    }
+    InstallHelper::examine_os( "To check Ctags installed, this OS is invalid" );
 
     string cmd;
     string result;
@@ -19,7 +15,7 @@ bool CtagsInstaller::check_ctags()
     cmd = "which ctags";
     result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
-    if ( !result.empty() )
+    if ( result != InstallHelper::FAILED )
         return true;
     else
         return false;
@@ -27,15 +23,12 @@ bool CtagsInstaller::check_ctags()
 
 bool CtagsInstaller::install_ctags()
 {
-    if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
-    {
-        InstallHelper::terminate( "To install Ctags, this OS is invalid" );
-    }
+    InstallHelper::examine_os( "To install Ctags, this OS is invalid" );
 
     if ( check_ctags() )
     {
         cout << "Ctags is already installed ..." << endl;
-        cout << "Ctags install complete ..." << endl;
+        cout << "Ctags install complete" << endl;
 
         return true;
     }
