@@ -18,6 +18,31 @@ using std::ifstream;
 const string YcmInstaller::extra_conf_path = string( getenv( "HOME" ) ) + 
     "/.vim/ycm_extra_conf_set/";
 
+bool YcmInstaller::chk_ycm()
+{
+    const string path = "~/.vim/bundle/YouCompleteMe/third_party/ycmd/";
+    string cmd;
+    string result;
+    vector< string > files;
+    vector< string >::iterator it;
+
+    files.push_back( "clang_archives/" );
+    files.push_back( "libclang.so.*" );
+    files.push_back( "PYTHON_USED_DURING_BUILDING" );
+    files.push_back( "ycm_core.so" );
+
+    for ( it = files.begin(); it != files.end(); it++ )
+    {
+        cmd = "find " + path + *it;
+        result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+
+        if ( InstallHelper::FAILED == result )
+            return false;
+    }
+
+    return true;
+}
+
 vector< string > YcmInstaller::get_sys_header_path( string language )
 {
     string cmd;
@@ -160,9 +185,9 @@ bool YcmInstaller::ycm_extra_conf_configure()
     return false;
 }
 
-bool YcmInstaller::install_ycm()
+bool YcmInstaller::restore_ycm()
 {
-    InstallHelper::examine_os( "To install Ycm, this OS is invalid" );
+    InstallHelper::examine_os( "To restore Ycm, this OS is invalid" );
 
     string cmd;
     string result;
@@ -174,7 +199,7 @@ bool YcmInstaller::install_ycm()
     if ( result == InstallHelper::FAILED )
     {
         InstallHelper::terminate( "Since python is not installed in this " \
-                "system, can't proceed install Ycm" );
+                "system, can't proceed install(restore) Ycm" );
     }
 
     if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
@@ -187,5 +212,24 @@ bool YcmInstaller::install_ycm()
     InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
     return true;
+}
+
+bool YcmInstaller::install_ycm()
+{
+    InstallHelper::examine_os( "To install Ycm, this OS is invalid" );
+
+    bool result;
+
+    if ( chk_ycm() )
+    {
+        cout << "Ycm is already installed ..." << endl;
+        cout << "Ycm install complete" << endl;
+
+        return true;
+    }
+
+    result = restore_ycm();
+
+    return result;
 }
 

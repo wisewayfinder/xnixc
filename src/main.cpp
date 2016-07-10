@@ -5,6 +5,7 @@
 #include "cscope_installer.h"
 #include "vim_manager.h"
 #include "ycm_installer.h"
+#include "xnixc_installer.h"
 
 int main()
 {
@@ -14,6 +15,7 @@ int main()
     CscopeInstaller::install_cscope();
     VimManager::vim_configure();
     YcmInstaller::install_ycm();
+    XnixcInstaller::install_xnixc();
 
     return(0);
 }
