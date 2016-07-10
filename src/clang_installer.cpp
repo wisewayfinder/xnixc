@@ -55,14 +55,12 @@ bool ClangInstaller::install_clang()
     if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
     {
         InstallHelper::terminate( "To install Clang, this OS is invalid" );
-
-        return false;
     }
 
     if ( check_clang() )
     {
-        cout << "Clang is already installed..." << endl;
-        cout << "Install Complete..." << endl;
+        cout << "Clang is already installed ..." << endl;
+        cout << "Clang install Complete ..." << endl;
 
         return true;
     }
@@ -70,7 +68,6 @@ bool ClangInstaller::install_clang()
     if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
     {
         string cmd;
-        string result;
 
         cmd = "sudo apt-add-repository --remove -y ppa:ubuntu-toolchain-r/test";
         InstallHelper::xnix_cmd_exec( cmd.c_str() );

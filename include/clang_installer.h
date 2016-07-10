@@ -1,7 +1,3 @@
-#include <string>
-
-using std::string; 
-
 class ClangInstaller
 {
 private:
