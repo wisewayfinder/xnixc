@@ -1,22 +1,22 @@
 #include <iostream>
 #include "install_helper.h"
-#include "ctags_installer.h"
+#include "cscope_installer.h"
 
 using std::cout;
 using std::endl;
 
-bool CtagsInstaller::check_ctags()
+bool CscopeInstaller::check_cscope()
 {
     if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
     {
-        InstallHelper::terminate( "To check Ctags installed, " \
+        InstallHelper::terminate( "To check Cscope installed, " \
                "this OS is invalid" );
     }
 
     string cmd;
     string result;
 
-    cmd = "which ctags";
+    cmd = "which cscope";
     result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
     if ( !result.empty() )
@@ -25,17 +25,17 @@ bool CtagsInstaller::check_ctags()
         return false;
 }
 
-bool CtagsInstaller::install_ctags()
+bool CscopeInstaller::install_cscope()
 {
     if ( InstallHelper::get_os() == InstallHelper::UNKNOWN )
     {
-        InstallHelper::terminate( "To install Ctags, this OS is invalid" );
+        InstallHelper::terminate( "To install Cscope, this OS is invalid" );
     }
 
-    if ( check_ctags() )
+    if ( check_cscope() )
     {
-        cout << "Ctags is already installed ..." << endl;
-        cout << "Ctags install complete ..." << endl;
+        cout << "Cscope is already installed ..." << endl;
+        cout << "Cscope install Complete ..." << endl;
 
         return true;
     }
@@ -44,14 +44,14 @@ bool CtagsInstaller::install_ctags()
 
     if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
     {
-        cmd = "sudo apt-get install -y exuberant-ctags";
+        cmd = "sudo apt-get install -y cscope";
         InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
         return true;
     }
     else if ( InstallHelper::get_os() == InstallHelper::MAC )
     {
-        cmd = "brew install ctags";
+        cmd = "brew install cscope";
         InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
         return true;

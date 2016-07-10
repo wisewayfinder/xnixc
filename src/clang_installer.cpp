@@ -60,7 +60,7 @@ bool ClangInstaller::install_clang()
     if ( check_clang() )
     {
         cout << "Clang is already installed ..." << endl;
-        cout << "Clang install Complete ..." << endl;
+        cout << "Clang install complete ..." << endl;
 
         return true;
     }

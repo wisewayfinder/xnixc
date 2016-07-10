@@ -32,7 +32,7 @@ bool CMakeInstaller::install_c_make()
     if ( check_c_make() )
     {
         cout << "CMake is already installed ..." << endl;
-        cout << "CMake install Complete" << endl;
+        cout << "CMake install complete" << endl;
 
         return true;
     }
