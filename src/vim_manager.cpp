@@ -47,8 +47,9 @@ bool VimManager::vimrc_configure()
     cmd = "which cscope";
     result = StrUtil::remove_lf( InstallHelper::xnix_cmd_exec( cmd.c_str() ) );
 
-    cmd = "sed -i -e \"s/##cscope_path/\\\"" + 
-        StrUtil::str_replace( result, "/", "\\/" ) + "\\\"/g\" ~/.vimrc";
+    cmd = "sed -i -e \"s/##cscope_path/" + 
+        StrUtil::str_replace( result, "/", "\\/" ) + "/g\" ~/.vimrc";
+                    std::cout << cmd << std::endl;
     InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
     cmd = "which ctags";

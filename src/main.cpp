@@ -4,6 +4,7 @@
 #include "ctags_installer.h"
 #include "cscope_installer.h"
 #include "vim_manager.h"
+#include "ycm_installer.h"
 
 int main()
 {
@@ -12,6 +13,7 @@ int main()
     CtagsInstaller::install_ctags();
     CscopeInstaller::install_cscope();
     VimManager::vim_configure();
+    YcmInstaller::install_ycm();
 
     return(0);
 }

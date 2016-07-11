@@ -29,7 +29,7 @@ bool CscopeInstaller::install_cscope()
     if ( check_cscope() )
     {
         cout << "Cscope is already installed ..." << endl;
-        cout << "Cscope install Complete" << endl;
+        cout << "Cscope install complete" << endl;
 
         return true;
     }

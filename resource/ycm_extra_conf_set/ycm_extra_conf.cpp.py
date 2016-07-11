@@ -63,20 +63,8 @@ flags = [
 'c++',
 '-isystem',
 '../BoostParts',
-'-isystem',
-'/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1',
-'-isystem',
-'/usr/local/include',
-'-isystem',
-'/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0/include',
-'-isystem',
-'/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include',
-'-isystem',
-'/usr/include',
-'-isystem',
-'/System/Library/Frameworks',
-'-isystem',
-'/Library/Frameworks',
+###system_include_pos_start###
+###system_include_pos_end###
 '-isystem',
 # This path will only work on OS X, but extra paths that don't exist are not
 # harmful
@@ -86,12 +74,14 @@ flags = [
 '-isystem',
 '../llvm/tools/clang/include',
 ###
+###local_include_pos_start###
 '-I',
 '.',
 '-I',
 './include',
 '-I',
 './include/**',
+###local_include_pos_end###
 '-I',
 './ClangCompleter',
 '-isystem',

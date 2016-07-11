@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 #include <cstdlib>
+#include "str_util.h"
 #include "install_helper.h"
 
 using std::cout;
@@ -75,7 +76,9 @@ const string InstallHelper::get_os()
     try
     {
 #ifdef __linux__
-        string uname_result = xnix_cmd_exec( "uname -a" );
+        string uname_result = xnix_cmd_exec( "uname -v" );
+        uname_result = StrUtil::str_lower( uname_result );
+
         if ( uname_result.find( UBUNTU ) == string::npos )
             throw runtime_error( "This linux type '" + uname_result + "'" + 
                     " isn't ubuntu, unavailable" );

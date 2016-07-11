@@ -1,6 +1,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 #include "str_util.h"
 
 using std::string;
@@ -53,6 +54,20 @@ string StrUtil::remove_lf( string str )
     {
         str.erase( str.length() - 1 );
     }
+
+    return str;
+}
+
+string StrUtil::str_lower( string str )
+{
+    std::transform( str.begin(), str.end(), str.begin(), ::tolower );
+
+    return str;
+}
+
+string StrUtil::str_upper( string str )
+{
+    std::transform( str.begin(), str.end(), str.begin(), ::toupper );
 
     return str;
 }
