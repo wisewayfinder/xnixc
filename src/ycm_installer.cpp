@@ -192,7 +192,8 @@ bool YcmInstaller::restore_ycm()
     string cmd;
     string result;
 
-    ycm_extra_conf_configure();
+    if ( !ycm_extra_conf_configure() )
+        InstallHelper::terminate( "ycm_extra_conf_configure failed" );
 
     cmd = "which python";
     result = InstallHelper::xnix_cmd_exec( cmd.c_str() );

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "install_helper.h"
+#include "clang_installer.h"
 #include "c_make_installer.h"
 
 using std::cout;
@@ -35,10 +36,10 @@ bool CMakeInstaller::install_c_make()
     if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
     {
 
-        cmd = "export CC=/usr/bin/clang";
+        cmd = "export CC=" + ClangInstaller::get_clang_path( "c" );
         InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
-        cmd = "export CXX=/usr/bin/clang++";
+        cmd = "export CXX=" + ClangInstaller::get_clang_path( "cpp" );
         InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
         cmd = "sudo apt-get install -y make";

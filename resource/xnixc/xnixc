@@ -16,10 +16,12 @@ then
     then
         ycm_conf="$HOME/.vim/ycm_extra_conf_set/ycm_extra_conf.c.py"
         init_src="$HOME/.xnixc/resource/main.c"
+        make_file="$HOME/.xnixc/resource/Makefile.c.conf"
     elif [ $2 == "cpp" ]
     then
         ycm_conf="$HOME/.vim/ycm_extra_conf_set/ycm_extra_conf.cpp.py"
         init_src="$HOME/.xnixc/resource/main.cpp"
+        make_file="$HOME/.xnixc/resource/Makefile.cpp.conf"
     else
         echo "Error(invalid arg) : invalid language type; valid - c / cpp"
 
@@ -64,6 +66,9 @@ then
 
     cp -- "$ycm_conf" "$tar/.ycm_extra_conf.py"
     echo -e "        \e[32m\e[1mcreate\e[0m .ycm_extra_conf.py"
+
+    cp -- "$make_file" "$tar/Makefile"
+    echo -e "        \e[32m\e[1mcreate\e[0m Makefile"
 
     eval "cd $tar && ctags -R"
     echo -e "        \e[32m\e[1mcreate\e[0m tags"
