@@ -6,6 +6,9 @@ inoremap <leader>O <Esc>O
 inoremap <leader>w <ESC>:w<CR>a
 nnoremap <leader>w :w<CR>
 inoremap <leader>f <ESC>$a;<CR>
+nnoremap <leader>s :vimgrep /
+nnoremap <leader>] :cnext<CR>
+nnoremap <leader>[ :cprevious<CR>
 
 set nu
 set tabstop=4

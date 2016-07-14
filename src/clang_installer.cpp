@@ -17,23 +17,21 @@ string ClangInstaller::get_clang_path( string lang )
 {
     string cmd;
     string result;
-    string cmd_name;
     regex cmd_regex;
 
     if ( lang == "c" )
     {
-        cmd_name = "clang";
+        cmd = "which clang";
         cmd_regex = regex( "(clang$|clang-\\d+\\.\\d+$)" );
     }
     else if ( lang == "cpp" )
     {
-        cmd_name = "clang++";
+        cmd = "which clang++";
         cmd_regex = regex( "(clang\\+\\+$|clang\\+\\+-\\d+\\.\\d+$)" );
     }
     else
         InstallHelper::terminate( "To get clang path, invalid language type" );
 
-    cmd = "which " + cmd_name;
     result = StrUtil::remove_lf( InstallHelper::xnix_cmd_exec( cmd.c_str() ) );
     if ( result != InstallHelper::FAILED )
         return result;
@@ -91,18 +89,35 @@ bool ClangInstaller::install_clang()
 {
     InstallHelper::examine_os( "To install Clang, this OS is invalid" );
 
+    string cmd;
+    string result;
+
     if ( check_clang() )
     {
         cout << "Clang is already installed ..." << endl;
         cout << "Clang install complete" << endl;
+
+        cmd = "which clang";
+        result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        if ( InstallHelper::FAILED == result )
+        {
+            cmd = "sudo ln -s " + get_clang_path( "c" ) + " /usr/bin/clang";
+            InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        }
+
+        cmd = "which clang++";
+        result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        if ( InstallHelper::FAILED == result )
+        {
+            cmd = "sudo ln -s " + get_clang_path( "cpp" ) + " /usr/bin/clang++";
+            InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        }
 
         return true;
     }
 
     if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
     {
-        string cmd;
-
         cmd = "sudo apt-add-repository --remove -y ppa:ubuntu-toolchain-r/test";
         InstallHelper::xnix_cmd_exec( cmd.c_str() );
 

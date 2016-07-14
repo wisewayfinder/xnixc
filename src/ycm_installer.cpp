@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include "install_helper.h"
 #include "str_util.h"
+#include "clang_installer.h"
 #include "ycm_installer.h"
 
 using std::cout;
@@ -59,13 +60,14 @@ vector< string > YcmInstaller::get_sys_header_path( string language )
 
     if ( language == "c" )
     {
-        cmd = "echo | clang -std=c99 -v -E -x c - 2> " + c_info_file;
+        cmd = "echo | " + ClangInstaller::get_clang_cmd( "c" ) +
+            " -std=c99 -v -E -x c - 2> " + c_info_file;
         info_file = c_info_file;
     }
     else if ( language == "cpp" )
     {
-        cmd = "echo | clang -std=c++11 -stdlib=libc++ -v -E -x c++ - 2>" + 
-            cpp_info_file;
+        cmd = "echo | " + ClangInstaller::get_clang_cmd( "cpp" ) +
+            " -std=c++11 -stdlib=libc++ -v -E -x c++ - 2>" + cpp_info_file;
         info_file = cpp_info_file;
     }
     else
