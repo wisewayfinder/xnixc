@@ -45,10 +45,10 @@ bool XnixcInstaller::set_makefile( const string lang )
     }
     temp_f_name = f_name + ".temp";
 
-    r_fs.open( f_name );
+    r_fs.open( f_name.c_str() );
     if ( !r_fs.is_open() )
         InstallHelper::terminate( "Open failed " + f_name );
-    w_fs.open( temp_f_name );
+    w_fs.open( temp_f_name.c_str() );
     if ( !w_fs.is_open() )
         InstallHelper::terminate( "Open failed " + temp_f_name );
 

@@ -1,5 +1,5 @@
 CC			=	clang++
-CXXFLAGS	=	-g -Wall -Wextra -Werror -pedantic-errors -Wc++98-compat -Wno-long-long -Wno-variadic-macros -fexceptions -DNDEBUG -DUSE_CLANG_COMPLETER -std=c++11 -stdlib=libc++
+CXXFLAGS	=	-g -Wall -Wextra -Werror -pedantic-errors -Wc++98-compat -Wno-long-long -Wno-variadic-macros -fexceptions #-DNDEBUG -DUSE_CLANG_COMPLETER -std=c++11 -stdlib=libc++
 INCLUDE		=	-Iinclude -Iinclude/**
 
 SDIR 		=	src

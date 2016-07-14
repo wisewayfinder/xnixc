@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <regex>
 #include "install_helper.h"
 #include "clang_installer.h"
 #include "str_util.h"
@@ -10,25 +9,71 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-using std::regex;
-using std::regex_search;
 
-string ClangInstaller::get_clang_path( string lang )
+bool ClangInstaller::find_clang_cmd( const string& str, const string& lang )
 {
     string cmd;
-    string result;
-    regex cmd_regex;
+    string cmp_cmd;
+    size_t pos;
+
+    cmd = *(StrUtil::str_split( StrUtil::remove_lf( str ), '/' ).end() - 1);
 
     if ( lang == "c" )
     {
-        cmd = "which clang";
-        cmd_regex = regex( "(clang$|clang-\\d+\\.\\d+$)" );
+        cmp_cmd = "clang-";
     }
     else if ( lang == "cpp" )
     {
-        cmd = "which clang++";
-        cmd_regex = regex( "(clang\\+\\+$|clang\\+\\+-\\d+\\.\\d+$)" );
+        cmp_cmd = "clang++-";
     }
+    else
+        InstallHelper::terminate( "find_clang_cmd: invalid language input" );
+
+    if ( cmd.length() <= cmp_cmd.length() )
+        return false;
+
+    pos = cmd.find( cmp_cmd );
+
+    if ( pos == string::npos )
+        return false;
+
+    pos += cmp_cmd.length();
+
+    if ( cmd[pos] < 48 || cmd[pos] > 57 )
+        return false;
+
+    bool searched_comma = false;
+    for ( pos += 1; pos < cmd.length(); pos++ )
+    {
+        if ( cmd[pos] == '.')
+        {
+            if ( !searched_comma && pos != cmd.length() - 1 )
+            {
+                searched_comma = true;
+                continue;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        if ( cmd[pos] < 48 || cmd[pos] > 57 )
+            return false;
+    }
+
+    return true;
+}
+
+string ClangInstaller::get_clang_path( const string& lang )
+{
+    string cmd;
+    string result;
+
+    if ( lang == "c" )
+        cmd = "which clang";
+    else if ( lang == "cpp" )
+        cmd = "which clang++";
     else
         InstallHelper::terminate( "To get clang path, invalid language type" );
 
@@ -57,7 +102,7 @@ string ClangInstaller::get_clang_path( string lang )
             for ( cmd_it = searched_cmds.begin(); cmd_it != searched_cmds.end();
                     cmd_it++ )
             {
-                if ( regex_search( *cmd_it, cmd_regex ) )
+                if ( find_clang_cmd( *cmd_it, lang ) )
                     return *cmd_it;
             }
         }
@@ -66,7 +111,7 @@ string ClangInstaller::get_clang_path( string lang )
     return InstallHelper::FAILED;
 }
 
-string ClangInstaller::get_clang_cmd( string lang )
+string ClangInstaller::get_clang_cmd( const string& lang )
 {
     string path = get_clang_path( lang );
     string cmd = *(StrUtil::str_split( path, '/' ).end() - 1);
