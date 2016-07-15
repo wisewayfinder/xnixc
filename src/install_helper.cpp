@@ -20,7 +20,8 @@ const string InstallHelper::UNKNOWN = "unknown";
 
 const string InstallHelper::FAILED = "failed";
 
-const string InstallHelper::xnix_cmd_exec( const char* cmd )
+const string InstallHelper::xnix_cmd_exec( const char* cmd,
+        bool silent /* = true */ )
 {
     const int BUFF_SIZE = 256;
 
@@ -33,13 +34,18 @@ const string InstallHelper::xnix_cmd_exec( const char* cmd )
 
     try
     {
-        cout << "******** EXECUTE : " << cmd << " ..." << " ********" << endl;
+        if ( !silent )
+        {
+            cout << "******** EXECUTE : " << cmd << " ..." << " ********" <<
+                endl;
+        }
 
         while ( !feof( pipe ) )
         {
             if ( fgets( buffer, BUFF_SIZE, pipe ) != NULL )
             {
-                cout << buffer;
+                if ( !silent )
+                    cout << buffer;
                 result += buffer;
             }
 
@@ -48,15 +54,20 @@ const string InstallHelper::xnix_cmd_exec( const char* cmd )
         int status = pclose( pipe );
         status = WEXITSTATUS( status );
 
-        cout << status << endl;
+        if ( !silent )
+            cout << status << endl;
+
         if ( status != 0 )
             throw runtime_error( string(cmd) );
     }
     catch ( runtime_error rte )
     {
-        cout << "xnix command '" << cmd << "' failed during runtime ..." 
-            << endl;
-        cout << rte.what() << endl;
+        if ( !silent )
+        {
+            cout << "xnix command '" << cmd << "' failed during runtime ..." 
+                << endl;
+            cout << rte.what() << endl;
+        }
 
         return FAILED;
     }

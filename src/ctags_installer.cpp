@@ -38,14 +38,14 @@ bool CtagsInstaller::install_ctags()
     if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
     {
         cmd = "sudo apt-get install -y exuberant-ctags";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         return true;
     }
     else if ( InstallHelper::get_os() == InstallHelper::MAC )
     {
         cmd = "brew install ctags";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         return true;
     }

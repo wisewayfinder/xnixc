@@ -147,7 +147,7 @@ bool ClangInstaller::install_clang()
         if ( InstallHelper::FAILED == result )
         {
             cmd = "sudo ln -s " + get_clang_path( "c" ) + " /usr/bin/clang";
-            InstallHelper::xnix_cmd_exec( cmd.c_str() );
+            InstallHelper::xnix_cmd_exec( cmd.c_str(), false);
         }
 
         cmd = "which clang++";
@@ -155,7 +155,7 @@ bool ClangInstaller::install_clang()
         if ( InstallHelper::FAILED == result )
         {
             cmd = "sudo ln -s " + get_clang_path( "cpp" ) + " /usr/bin/clang++";
-            InstallHelper::xnix_cmd_exec( cmd.c_str() );
+            InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
         }
 
         return true;
@@ -164,25 +164,25 @@ bool ClangInstaller::install_clang()
     if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
     {
         cmd = "sudo apt-add-repository --remove -y ppa:ubuntu-toolchain-r/test";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo apt-add-repository --remove -y \"deb http://llvm.org/apt/" \
                "trusty/ llvm-toolchain-trusty-3.8 main\"";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo apt-add-repository -y \"deb http://llvm.org/apt/trusty/ " \
                "llvm-toolchain-trusty-3.8 main\"";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|" \
                "sudo apt-key add -";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo apt-get update";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo apt-get install -y clang-3.8 clang-3.8-doc " \
                "libclang-common-3.8-dev libclang-3.8-dev libclang1-3.8 " \
@@ -191,13 +191,13 @@ bool ClangInstaller::install_clang()
                "llvm-3.8-examples llvm-3.8-runtime clang-format-3.8 " \
                "python-clang-3.8 lldb-3.8-dev liblldb-3.8-dbg libc++-dev " \
                "libc++abi-dev";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo ln -s /usr/bin/clang-3.8 /usr/bin/clang";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo ln -s /usr/bin/clang++-3.8 /usr/bin/clang++";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         return true;
     }

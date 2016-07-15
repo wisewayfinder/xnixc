@@ -37,48 +37,48 @@ bool CMakeInstaller::install_c_make()
     {
 
         cmd = "export CC=" + ClangInstaller::get_clang_path( "c" );
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "export CXX=" + ClangInstaller::get_clang_path( "cpp" );
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo apt-get install -y make";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "wget -O ~/cmake-3.5.2.tar.gz " \
                "https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "rm -rf ~/cmake-3.5.2";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "tar -xvzf ~/cmake-3.5.2.tar.gz -C ~/";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "rm ~/cmake-3.5.2.tar.gz";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "cd ~/cmake-3.5.2 && ./configure";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "cd ~/cmake-3.5.2 && make";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo apt-get install -y checkinstall";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "cd ~/cmake-3.5.2 && sudo checkinstall -y";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "sudo rm -rf ~/cmake-3.5.2";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         return true;
     }
     else if ( InstallHelper::get_os() == InstallHelper::MAC )
     {
         cmd = "brew install CMake";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         return true;
     }
