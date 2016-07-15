@@ -64,7 +64,7 @@ bool XnixcInstaller::set_makefile( const string lang )
     w_fs.close();
 
     cmd = "mv " + temp_f_name + " " + f_name;
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     return true;
 }
@@ -105,31 +105,31 @@ bool XnixcInstaller::install_xnixc()
     {
         cmd = "echo " + StrUtil::str_replace( bash_cmd, "$", "\\$" ) + " >> " +
             bash_f;
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         cmd = "source " + bash_f;
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         is_cmd = false;
     }
 
     cmd = "rm -rf ~/.xnixc";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     cmd = "mkdir ~/.xnixc";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     cmd = "mkdir ~/.xnixc/resource";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     cmd = "cp ../resource/xnixc/xnixc ~/.xnixc";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     cmd = "chmod 755 ~/.xnixc/xnixc";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     cmd = "cp ../resource/xnixc/*.* ~/.xnixc/resource";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     set_makefile( "c" );
     set_makefile( "cpp" );

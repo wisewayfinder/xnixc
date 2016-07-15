@@ -36,10 +36,10 @@ bool VimManager::vimrc_configure()
         InstallHelper::terminate( "Ctags isn't installed in this system" );
 
     cmd = "mkdir ~/.vimbackup";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     cmd = "cp ../resource/vimrc ~/.vimrc";
-    result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    result = InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
     
     if ( result == InstallHelper::FAILED )
         InstallHelper::terminate( "Can't copy vimrc file" );
@@ -50,14 +50,14 @@ bool VimManager::vimrc_configure()
     cmd = "sed -i -e \"s/##cscope_path/" + 
         StrUtil::str_replace( result, "/", "\\/" ) + "/g\" ~/.vimrc";
                     std::cout << cmd << std::endl;
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     cmd = "which ctags";
     result = StrUtil::remove_lf( InstallHelper::xnix_cmd_exec( cmd.c_str() ) );
 
     cmd = "sed -i -e \"s/##ctags_path/\\\"" + 
         StrUtil::str_replace( result, "/", "\\/" ) + "\\\"/g\" ~/.vimrc";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     return true;
 }
@@ -74,7 +74,7 @@ bool VimManager::vundle_install()
 
         cmd = "git clone https://github.com/VundleVim/Vundle.vim.git " \
                "~/.vim/bundle/Vundle.vim";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         return true;
     }
@@ -94,7 +94,7 @@ bool VimManager::plugin_install()
     string result;
     
     cmd = "echo | vim +PluginInstall +qall";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     return true;
 }

@@ -39,14 +39,14 @@ bool CscopeInstaller::install_cscope()
     if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
     {
         cmd = "sudo apt-get install -y cscope";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         return true;
     }
     else if ( InstallHelper::get_os() == InstallHelper::MAC )
     {
         cmd = "brew install cscope";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         return true;
     }

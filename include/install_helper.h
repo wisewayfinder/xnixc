@@ -14,7 +14,7 @@ public:
 
     static const string FAILED;
 
-    static const string xnix_cmd_exec( const char* cmd );
+    static const string xnix_cmd_exec( const char* cmd, bool silent = true );
     static const string get_os();
     static void examine_os( string err_msg );
     static bool terminate( string reason = string("") );

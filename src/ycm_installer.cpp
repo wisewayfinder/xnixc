@@ -34,7 +34,7 @@ bool YcmInstaller::chk_ycm()
 
     for ( it = files.begin(); it != files.end(); it++ )
     {
-        cmd = "find " + path + *it;
+        cmd = "find " + path + *it + " 2> /dev/null";
         result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
         if ( InstallHelper::FAILED == result )
@@ -172,7 +172,7 @@ bool YcmInstaller::ycm_extra_conf_configure()
     string result;
 
     cmd = "cp -rf ../resource/ycm_extra_conf_set/ ~/.vim/";
-    result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    result = InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     if ( result == InstallHelper::FAILED )
         InstallHelper::terminate( "Can't copy ycm_extra_conf_set directory" );
@@ -208,11 +208,11 @@ bool YcmInstaller::restore_ycm()
     if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
     {
         cmd = "sudo apt-get install -y build-essential python-dev python3-dev";
-        InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
     }
 
     cmd = "cd ~/.vim/bundle/YouCompleteMe && ./install.py --clang-completer";
-    InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     return true;
 }
