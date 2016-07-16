@@ -133,7 +133,7 @@ bool ClangInstaller::check_clang()
     }
     else if ( InstallHelper::get_os() == InstallHelper::MAC )
     {
-        string cmd = "find /Library/Developer/CommandLineTools 2> /dev/null";
+        string cmd = "xcode-select -p 2> /dev/null";
         string result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
         if ( InstallHelper::FAILED == result )
