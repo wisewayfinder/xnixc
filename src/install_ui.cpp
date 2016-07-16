@@ -83,10 +83,21 @@ bool InstallUi::init_cmd_list()
     }
     else if ( InstallHelper::get_os() == InstallHelper::MAC )
     {
-        cmd_list.push_back( CmdInfo( "clang", ClangInstaller::check_clang,
-                    ClangInstaller::install_clang ) );
         cmd_list.push_back( CmdInfo( "homebrew", BrewInstaller::chk_brew, 
                     BrewInstaller::install_brew ) );
+
+        if ( BrewInstaller::chk_brew() )
+        {
+            cmd_list.push_back( CmdInfo( "clang", ClangInstaller::check_clang,
+                        ClangInstaller::install_clang ) );
+        }
+
+        if ( BrewInstaller::chk_brew() )
+        {
+            cmd_list.push_back( CmdInfo( "cmake", CMakeInstaller::check_c_make,
+                        CMakeInstaller::install_c_make ) );
+
+        }
     }
     else
         return false;
@@ -103,17 +114,9 @@ bool InstallUi::draw_cmds()
 
     cout << endl << "********    xnixc Installer    ********" << endl << endl;
 
-    if (
-            InstallHelper::get_os() == InstallHelper::UBUNTU || 
-            ( InstallHelper::get_os() == InstallHelper::MAC &&
-              ClangInstaller::check_clang() 
-            ) 
-       )
-    {
-        cout << "[  0 ] ";
-        cout.width(12);
-        cout << std::left << "All-in-one install" << endl;
-    }
+    cout << "[  0 ] ";
+    cout.width(12);
+    cout << std::left << "All-in-one install" << endl;
 
     for ( idx = 0; idx < cmd_list.size(); idx++ )
     {
@@ -137,12 +140,21 @@ bool InstallUi::install_cmd( int cmd_num )
 
     if( cmd_num == 0 )
     {
-        vector< CmdInfo >::iterator it;
-
-        for ( it = cmd_list.begin(); it != cmd_list.end(); it++ ) 
+        if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
         {
-            (*(*it).install_func)();
-            cout << endl;
+            ClangInstaller::install_clang();
+            CMakeInstaller::install_c_make();
+            CtagsInstaller::install_ctags();
+            CscopeInstaller::install_cscope();
+            VimManager::vim_configure();
+            YcmInstaller::install_ycm();
+            XnixcInstaller::install_xnixc();
+        }
+        else if ( InstallHelper::get_os() == InstallHelper::MAC )
+        {
+            BrewInstaller::install_brew();
+            ClangInstaller::install_clang();
+            CMakeInstaller::install_c_make();
         }
 
         return true;

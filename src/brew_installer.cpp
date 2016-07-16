@@ -22,6 +22,26 @@ bool BrewInstaller::chk_brew()
         return true;
 }
 
+bool BrewInstaller::chk_pack( const string& pack_name )
+{
+    if ( !chk_brew() )
+    {
+        InstallHelper::terminate( "Before check package installed, " \
+                "install brew " );
+    }
+
+    string cmd;
+    string result;
+
+    cmd = "brew list " + pack_name + " 2> /dev/null";
+    result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+
+    if ( InstallHelper::FAILED == result )
+        return false;
+    else
+        return true;
+}
+
 bool BrewInstaller::install_brew()
 {
     if ( InstallHelper::get_os() != InstallHelper::MAC )

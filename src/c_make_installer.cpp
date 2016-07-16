@@ -1,5 +1,6 @@
 #include <iostream>
 #include "install_helper.h"
+#include "brew_installer.h"
 #include "clang_installer.h"
 #include "c_make_installer.h"
 
@@ -10,11 +11,23 @@ bool CMakeInstaller::check_c_make()
 {
     InstallHelper::examine_os( "To check CMake installed, this OS is invalid" );
 
-    string cmd = "which cmake";
-    string result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+    if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
+    {
+        string cmd = "which cmake";
+        string result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
-    if ( result != InstallHelper::FAILED )
-        return true;
+        if ( result != InstallHelper::FAILED )
+            return true;
+        else
+            return false;
+    }
+    else if ( InstallHelper::get_os() == InstallHelper::MAC )
+    {
+        if ( BrewInstaller::chk_pack( "cmake" ) )
+            return true;
+        else
+            return false;
+    }
     else
         return false;
 }
@@ -72,16 +85,23 @@ bool CMakeInstaller::install_c_make()
 
         cmd = "sudo rm -rf ~/cmake-3.5.2";
         InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
-
-        return true;
     }
     else if ( InstallHelper::get_os() == InstallHelper::MAC )
     {
+        if ( !BrewInstaller::chk_brew() )
+        {
+            cout << "Before Cmake install, need HomeBrew ...";
+            cout << "Cmake install failed" << endl;
+
+            return false;
+        }
+
         cmd = "brew install CMake";
         InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
-
-        return true;
     }
 
-    return false;
+    if ( check_c_make() )
+        return true;
+    else
+        return false;
 }
