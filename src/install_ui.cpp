@@ -80,6 +80,13 @@ bool InstallUi::init_cmd_list()
                     );
         }
     }
+    else if ( InstallHelper::get_os() == InstallHelper::MAC )
+    {
+        cmd_list.push_back( CmdInfo( "clang", ClangInstaller::check_clang,
+                    ClangInstaller::install_clang ) );
+    }
+    else
+        return false;
 
     return true;
 }
@@ -93,9 +100,17 @@ bool InstallUi::draw_cmds()
 
     cout << endl << "********    xnixc Installer    ********" << endl << endl;
 
-    cout << "[  0 ] ";
-    cout.width(12);
-    cout << std::left << "All-in-one install" << endl;
+    if (
+            InstallHelper::get_os() == InstallHelper::UBUNTU || 
+            ( InstallHelper::get_os() == InstallHelper::MAC &&
+              ClangInstaller::check_clang() 
+            ) 
+       )
+    {
+        cout << "[  0 ] ";
+        cout.width(12);
+        cout << std::left << "All-in-one install" << endl;
+    }
 
     for ( idx = 0; idx < cmd_list.size(); idx++ )
     {
