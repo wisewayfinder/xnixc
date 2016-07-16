@@ -1,5 +1,6 @@
 #include <iostream>
 #include "install_helper.h"
+#include "brew_installer.h"
 #include "cscope_installer.h"
 
 using std::cout;
@@ -10,14 +11,26 @@ bool CscopeInstaller::check_cscope()
     InstallHelper::examine_os( "To check Cscope installed, this OS is " \
             "invalid" );
 
-    string cmd;
-    string result;
+    if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
+    {
+        string cmd;
+        string result;
 
-    cmd = "which cscope";
-    result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        cmd = "which cscope";
+        result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
-    if ( result != InstallHelper::FAILED )
-        return true;
+        if ( result != InstallHelper::FAILED )
+            return true;
+        else
+            return false;
+    }
+    else if ( InstallHelper::get_os() == InstallHelper::MAC )
+    {
+        if ( BrewInstaller::chk_pack( "cscope" ) )
+            return true;
+        else
+            return false;
+    }
     else
         return false;
 }
@@ -45,11 +58,21 @@ bool CscopeInstaller::install_cscope()
     }
     else if ( InstallHelper::get_os() == InstallHelper::MAC )
     {
+        if ( !BrewInstaller::chk_brew() )
+        {
+            cout << "Before cscope install, need HomeBrew ...";
+            cout << "cscope install failed" << endl;
+
+            return false;
+        }
         cmd = "brew install cscope";
         InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
         return true;
     }
 
-    return false;
+    if ( check_cscope() )
+        return true;
+    else
+        return false;
 }

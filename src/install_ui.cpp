@@ -90,13 +90,13 @@ bool InstallUi::init_cmd_list()
         {
             cmd_list.push_back( CmdInfo( "clang", ClangInstaller::check_clang,
                         ClangInstaller::install_clang ) );
-        }
-
-        if ( BrewInstaller::chk_brew() )
-        {
             cmd_list.push_back( CmdInfo( "cmake", CMakeInstaller::check_c_make,
                         CMakeInstaller::install_c_make ) );
-
+            cmd_list.push_back( CmdInfo( "ctags", CtagsInstaller::check_ctags,
+                        CtagsInstaller::install_ctags ) );
+            cmd_list.push_back( CmdInfo( "cscope", 
+                        CscopeInstaller::check_cscope, 
+                        CscopeInstaller::install_cscope ) );
         }
     }
     else
@@ -155,6 +155,8 @@ bool InstallUi::install_cmd( int cmd_num )
             BrewInstaller::install_brew();
             ClangInstaller::install_clang();
             CMakeInstaller::install_c_make();
+            CtagsInstaller::install_ctags();
+            CscopeInstaller::install_cscope();
         }
 
         return true;
