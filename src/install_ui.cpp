@@ -4,6 +4,7 @@
 #include <vector>
 #include "install_helper.h"
 #include "clang_installer.h"
+#include "brew_installer.h"
 #include "c_make_installer.h"
 #include "cscope_installer.h"
 #include "ctags_installer.h"
@@ -84,6 +85,8 @@ bool InstallUi::init_cmd_list()
     {
         cmd_list.push_back( CmdInfo( "clang", ClangInstaller::check_clang,
                     ClangInstaller::install_clang ) );
+        cmd_list.push_back( CmdInfo( "homebrew", BrewInstaller::chk_brew, 
+                    BrewInstaller::install_brew ) );
     }
     else
         return false;
