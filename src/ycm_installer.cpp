@@ -142,7 +142,8 @@ bool YcmInstaller::set_extra_conf( string language )
             for ( it = sys_headers.begin(); it != sys_headers.end(); it++ )
             {
                 w_fs << "'-isystem'," << endl;
-                w_fs << "'" << *it << "'," << endl;
+                w_fs << "'" << *(StrUtil::str_split( *it, ' ' ).begin()) << 
+                    "'," << endl;
             }
 
             coping = false;
@@ -226,6 +227,9 @@ bool YcmInstaller::install_ycm()
     {
         cout << "Ycm is already installed ..." << endl;
         cout << "Ycm install complete" << endl;
+
+        if ( !ycm_extra_conf_configure() )
+            InstallHelper::terminate( "ycm_extra_conf_configure failed" );
 
         return true;
     }

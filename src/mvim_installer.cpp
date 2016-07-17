@@ -15,10 +15,14 @@ bool MvimInstaller::set_bash()
     string result;
     ifstream r_fs;
     bool alias_vi = false;
-    bool alias_vim= false;
+    bool alias_vim = false;
+    bool set_visual = false;
+    bool set_editor = false;
     const string f_name = string( getenv("HOME") ) + "/.bash_profile";
     const string vi_cmd = "alias vi=\"mvim -v\"";
     const string vim_cmd = "alias vim=\"mvim -v\"";
+    const string visual_cmd = "export VISUAL=\"mvim -v\"";
+    const string editor_cmd = "export EDITOR=\"$VISUAL\"";
     string read_line;
 
     r_fs.open( f_name.c_str() );
@@ -45,6 +49,12 @@ bool MvimInstaller::set_bash()
 
         if ( read_line.find( vim_cmd ) != string::npos )
             alias_vim = true;
+
+        if ( read_line.find( visual_cmd ) != string::npos )
+            set_visual = true;
+
+        if ( read_line.find( editor_cmd ) != string::npos )
+            set_editor = true;
     }
 
     if ( !alias_vi )
@@ -58,6 +68,26 @@ bool MvimInstaller::set_bash()
     {
         cmd = "echo " + StrUtil::str_replace( vim_cmd, "\"", "\\\"" ) + " >> " +
             f_name;
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
+    }
+
+    if ( !set_visual )
+    {
+        cmd = "echo " + StrUtil::str_replace( visual_cmd, "\"", "\\\"" ) + 
+            " >> " + f_name;
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
+
+        cmd = StrUtil::str_replace( editor_cmd, "\"", "\\\"" );
+        cmd = StrUtil::str_replace( cmd, "$", "\\$" );
+        cmd = "echo " + cmd + " >> " + f_name;
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
+    }
+
+    if ( set_visual && !set_editor )
+    {
+        cmd = StrUtil::str_replace( editor_cmd, "\"", "\\\"" );
+        cmd = StrUtil::str_replace( cmd, "$", "\\$" );
+        cmd = "echo " + cmd + " >> " + f_name;
         InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
     }
 

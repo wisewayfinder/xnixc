@@ -6,7 +6,7 @@ SDIR 		=	src
 ODIR 		=	build
 HDIR		=	include
 BDIR 		=	bin
-OUT			=	c_dev_env_manager_installer
+OUT			=	installer
 
 SRCS		=	$(wildcard $(SDIR)/*.cpp)
 OBJS		=	$(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRCS))
