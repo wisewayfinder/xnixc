@@ -21,6 +21,8 @@ class InstallUi
 private:
     vector< CmdInfo > cmd_list;
 
+    bool vim_inst_state;
+    bool xnixc_inst_state;
     bool init_cmd_list();
     bool draw_cmds();
     bool install_cmd( int cmd_num );

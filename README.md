@@ -1,5 +1,5 @@
 # README
 
 ### Installation
-$ cd ./bin
-$ ./installer
+    $ cd ./bin
+    $ ./installer

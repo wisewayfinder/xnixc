@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# color
+N=`tput sgr0` # none
+B=`tput bold` # bold
+R=`tput setaf 1` # red
+G=`tput setaf 2` # green
+C=`tput setaf 4` # cyan
+
 if [ $# -eq 0 ] 
 then
     echo "Error(no args) : type 2 args; project name / language type"
@@ -39,8 +46,7 @@ then
 
     mkdir "$tar"
     echo ""
-    echo -e "    \e[32m\e[1mcreate\e[0m new \e[31m\e[1m$2\e[0m project" \
-            "\e[36m\e[1m$1\e[0m"
+    echo "    ${B}${G}create${N} new ${R}${B}$2${N} project ${C}${B}$1${N}"
 
     sub_dirs=( "bin" "build" "doc" "include" "lib" "resource" "spike" "src" 
                "test" )
@@ -49,35 +55,35 @@ then
     do
         mkdir "$tar/$dir"
         touch "$tar/$dir/.keep"
-        echo -e "        \e[32m\e[1mcreate\e[0m $dir/"
+        echo -e "        ${G}${B}create${N} $dir/"
         if [ $dir == "src" ]
         then
             cp -- "$init_src" "$tar/$dir/"
 
             if [ $2 == "c" ]
             then
-                echo -e "        \e[32m\e[1mcreate\e[0m $dir/main.c"
+                echo -e "        ${G}${B}create${N} $dir/main.c"
             elif [ $2 == "cpp" ]
             then
-                echo -e "        \e[32m\e[1mcreate\e[0m $dir/main.cpp"
+                echo -e "        ${G}${B}create${N} $dir/main.cpp"
             fi
         fi
     done
 
     cp -- "$ycm_conf" "$tar/.ycm_extra_conf.py"
-    echo -e "        \e[32m\e[1mcreate\e[0m .ycm_extra_conf.py"
+    echo -e "        ${G}${B}create${N} .ycm_extra_conf.py"
 
     cp -- "$make_file" "$tar/Makefile"
-    echo -e "        \e[32m\e[1mcreate\e[0m Makefile"
+    echo -e "        ${G}${B}create${N} Makefile"
 
     eval "cd $tar && ctags -R"
-    echo -e "        \e[32m\e[1mcreate\e[0m tags"
+    echo -e "        ${G}${B}create${N} tags"
 
     touch "$tar/cscope.files"
-    echo -e "        \e[32m\e[1mcreate\e[0m cscope.files"
+    echo -e "        ${G}${B}create${N} cscope.files"
 
     touch "$tar/cscope.out"
-    echo -e "        \e[32m\e[1mcreate\e[0m cscope.out"
+    echo -e "        ${G}${B}create${N} cscope.out"
 
     echo ""
 

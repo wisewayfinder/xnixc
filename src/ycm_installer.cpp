@@ -28,7 +28,6 @@ bool YcmInstaller::chk_ycm()
     vector< string >::iterator it;
 
     files.push_back( "clang_archives/" );
-    files.push_back( "libclang.so.*" );
     files.push_back( "PYTHON_USED_DURING_BUILDING" );
     files.push_back( "ycm_core.so" );
 
@@ -143,7 +142,8 @@ bool YcmInstaller::set_extra_conf( string language )
             for ( it = sys_headers.begin(); it != sys_headers.end(); it++ )
             {
                 w_fs << "'-isystem'," << endl;
-                w_fs << "'" << *it << "'," << endl;
+                w_fs << "'" << *(StrUtil::str_split( *it, ' ' ).begin()) << 
+                    "'," << endl;
             }
 
             coping = false;
@@ -171,15 +171,15 @@ bool YcmInstaller::ycm_extra_conf_configure()
     string cmd;
     string result;
 
-    cmd = "cp -rf ../resource/ycm_extra_conf_set/ ~/.vim/";
+    cmd = "cp -rf ../resource/ycm_extra_conf_set/ ~/.vim/ycm_extra_conf_set/";
     result = InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     if ( result == InstallHelper::FAILED )
         InstallHelper::terminate( "Can't copy ycm_extra_conf_set directory" );
     else
     {
-        set_extra_conf("c");
-        set_extra_conf("cpp");
+        set_extra_conf( "c" );
+        set_extra_conf( "cpp" );
 
         return true;
     }
@@ -227,6 +227,9 @@ bool YcmInstaller::install_ycm()
     {
         cout << "Ycm is already installed ..." << endl;
         cout << "Ycm install complete" << endl;
+
+        if ( !ycm_extra_conf_configure() )
+            InstallHelper::terminate( "ycm_extra_conf_configure failed" );
 
         return true;
     }

@@ -4,6 +4,8 @@
 #include <vector>
 #include "install_helper.h"
 #include "clang_installer.h"
+#include "brew_installer.h"
+#include "mvim_installer.h"
 #include "c_make_installer.h"
 #include "cscope_installer.h"
 #include "ctags_installer.h"
@@ -49,18 +51,31 @@ bool InstallUi::init_cmd_list()
         cmd_list.push_back( CmdInfo( "cscope", CscopeInstaller::check_cscope,
                    CscopeInstaller::install_cscope ) );
 
-        if ( CscopeInstaller::check_cscope() && CtagsInstaller::check_ctags() )
+        if ( CtagsInstaller::check_ctags() && CscopeInstaller::check_cscope() )
         {
-            cmd_list.push_back( 
-                    CmdInfo( 
-                        "vim config( not installed indication is not correct )",
-                        return_false,
-                        VimManager::vim_configure 
-                        ) 
-                    );
+            if ( vim_inst_state )
+            {
+                cmd_list.push_back( 
+                        CmdInfo( 
+                            "vim config",
+                            return_true,
+                            VimManager::vim_configure 
+                            ) 
+                        );
+            }
+            else
+            {
+                cmd_list.push_back( 
+                        CmdInfo( 
+                            "vim config",
+                            return_false,
+                            VimManager::vim_configure 
+                            ) 
+                        );
+            }
         }
 
-        if ( ClangInstaller::check_clang() )
+        if ( ClangInstaller::check_clang() && CMakeInstaller::check_c_make() )
         {
             cmd_list.push_back( CmdInfo( "YouCompleteMe", YcmInstaller::chk_ycm,
                        YcmInstaller::install_ycm ) );
@@ -71,15 +86,113 @@ bool InstallUi::init_cmd_list()
                 CscopeInstaller::check_cscope() &&
                 YcmInstaller::chk_ycm() )
         {
-            cmd_list.push_back( 
-                    CmdInfo( 
-                        "xnixc( not installed indication is not correct )",
-                        return_false,
-                        XnixcInstaller::install_xnixc 
-                        ) 
-                    );
+            if ( xnixc_inst_state )
+            {
+                cmd_list.push_back( 
+                        CmdInfo( 
+                            "xnixc( don't forget source bash )",
+                            return_true,
+                            XnixcInstaller::install_xnixc 
+                            ) 
+                        );
+            }
+            else
+            {
+                cmd_list.push_back( 
+                        CmdInfo( 
+                            "xnixc",
+                            return_false,
+                            XnixcInstaller::install_xnixc 
+                            ) 
+                        );
+            }
         }
     }
+    else if ( InstallHelper::get_os() == InstallHelper::MAC )
+    {
+        cmd_list.push_back( CmdInfo( "homebrew", BrewInstaller::chk_brew, 
+                    BrewInstaller::install_brew ) );
+        cmd_list.push_back( CmdInfo( "MacVim( don't forget source bash )",
+                    MvimInstaller::chk_mvim, 
+                    MvimInstaller::install_mvim ) );
+
+        if ( BrewInstaller::chk_brew() )
+        {
+            cmd_list.push_back( CmdInfo( "clang", ClangInstaller::check_clang,
+                        ClangInstaller::install_clang ) );
+            cmd_list.push_back( CmdInfo( "cmake", CMakeInstaller::check_c_make,
+                        CMakeInstaller::install_c_make ) );
+            cmd_list.push_back( CmdInfo( "ctags", CtagsInstaller::check_ctags,
+                        CtagsInstaller::install_ctags ) );
+            cmd_list.push_back( CmdInfo( "cscope", 
+                        CscopeInstaller::check_cscope, 
+                        CscopeInstaller::install_cscope ) );
+
+            if ( CtagsInstaller::check_ctags() && 
+                    CscopeInstaller::check_cscope() && 
+                    MvimInstaller::chk_mvim() )
+            {
+                if ( vim_inst_state )
+                {
+                    cmd_list.push_back( 
+                            CmdInfo( 
+                                "vim config",
+                                return_true,
+                                VimManager::vim_configure 
+                                ) 
+                            );
+                }
+                else
+                {
+                    cmd_list.push_back( 
+                            CmdInfo( 
+                                "vim config",
+                                return_false,
+                                VimManager::vim_configure 
+                                ) 
+                            );
+                }
+            }
+
+            if ( ClangInstaller::check_clang() &&
+                    CMakeInstaller::check_c_make() &&
+                    MvimInstaller::chk_mvim() )
+            {
+                cmd_list.push_back( CmdInfo( "YouCompleteMe",
+                            YcmInstaller::chk_ycm,
+                            YcmInstaller::install_ycm ) );
+            }
+
+            if ( ClangInstaller::check_clang() && 
+                    CtagsInstaller::check_ctags() &&
+                    CscopeInstaller::check_cscope() &&
+                    MvimInstaller::chk_mvim() && YcmInstaller::chk_ycm() )
+            {
+                if ( xnixc_inst_state )
+                {
+                    cmd_list.push_back( 
+                            CmdInfo( 
+                                "xnixc( don't forget source bash )",
+                                return_true, 
+                                XnixcInstaller::install_xnixc 
+                                ) 
+                            );
+                }
+                else
+                {
+                    cmd_list.push_back( 
+                            CmdInfo( 
+                                "xnixc",
+                                return_false, 
+                                XnixcInstaller::install_xnixc 
+                                ) 
+                            );
+                }
+            }
+        }
+    }
+    else
+        return false;
 
     return true;
 }
@@ -105,7 +218,7 @@ bool InstallUi::draw_cmds()
         cout << "[ ";
         cout.width(2);
         cout << std::right << idx + 1 << " ] ";
-        cout.width(56);
+        cout.width(48);
         cout << std::left << cmd_list[idx].cmd_name;
         cout << "[ " << install_state << " ]" << endl;
     }
@@ -119,12 +232,33 @@ bool InstallUi::install_cmd( int cmd_num )
 
     if( cmd_num == 0 )
     {
-        vector< CmdInfo >::iterator it;
-
-        for ( it = cmd_list.begin(); it != cmd_list.end(); it++ ) 
+        if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
         {
-            (*(*it).install_func)();
-            cout << endl;
+            ClangInstaller::install_clang();
+            CMakeInstaller::install_c_make();
+            CtagsInstaller::install_ctags();
+            CscopeInstaller::install_cscope();
+            VimManager::vim_configure();
+            YcmInstaller::install_ycm();
+            XnixcInstaller::install_xnixc();
+
+            vim_inst_state = true;
+            xnixc_inst_state = true;
+        }
+        else if ( InstallHelper::get_os() == InstallHelper::MAC )
+        {
+            BrewInstaller::install_brew();
+            MvimInstaller::install_mvim();
+            ClangInstaller::install_clang();
+            CMakeInstaller::install_c_make();
+            CtagsInstaller::install_ctags();
+            CscopeInstaller::install_cscope();
+            VimManager::vim_configure();
+            YcmInstaller::install_ycm();
+            XnixcInstaller::install_xnixc();
+
+            vim_inst_state = true;
+            xnixc_inst_state = true;
         }
 
         return true;
@@ -135,10 +269,19 @@ bool InstallUi::install_cmd( int cmd_num )
         return false;
     }
     else
+    {
+        if ( cmd_list[ cmd_num - 1 ].install_func == VimManager::vim_configure )
+            vim_inst_state = true;
+
+        if ( cmd_list[ cmd_num - 1 ].install_func == 
+                XnixcInstaller::install_xnixc )
+            xnixc_inst_state = true;
+        
         return (*cmd_list[cmd_num - 1].install_func)();
+    }
 }
 
-InstallUi::InstallUi()
+InstallUi::InstallUi() : vim_inst_state( false ), xnixc_inst_state( false )
 {
     init_cmd_list();
 }

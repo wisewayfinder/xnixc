@@ -20,6 +20,11 @@ const string InstallHelper::UNKNOWN = "unknown";
 
 const string InstallHelper::FAILED = "failed";
 
+const string InstallHelper::get_home()
+{
+    return string( getenv("HOME") );
+}
+
 const string InstallHelper::xnix_cmd_exec( const char* cmd,
         bool silent /* = true */ )
 {

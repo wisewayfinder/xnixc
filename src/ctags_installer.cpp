@@ -1,5 +1,6 @@
 #include <iostream>
 #include "install_helper.h"
+#include "brew_installer.h"
 #include "ctags_installer.h"
 
 using std::cout;
@@ -9,14 +10,26 @@ bool CtagsInstaller::check_ctags()
 {
     InstallHelper::examine_os( "To check Ctags installed, this OS is invalid" );
 
-    string cmd;
-    string result;
+    if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
+    {
+        string cmd;
+        string result;
 
-    cmd = "which ctags";
-    result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+        cmd = "which ctags";
+        result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
 
-    if ( result != InstallHelper::FAILED )
-        return true;
+        if ( result != InstallHelper::FAILED )
+            return true;
+        else
+            return false;
+    }
+    else if ( InstallHelper::get_os() == InstallHelper::MAC )
+    {
+        if ( BrewInstaller::chk_pack( "ctags" ) )
+            return true;
+        else
+            return false;
+    }
     else
         return false;
 }
@@ -39,16 +52,23 @@ bool CtagsInstaller::install_ctags()
     {
         cmd = "sudo apt-get install -y exuberant-ctags";
         InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
-
-        return true;
     }
     else if ( InstallHelper::get_os() == InstallHelper::MAC )
     {
+        if ( !BrewInstaller::chk_brew() )
+        {
+            cout << "Before Ctags install, need HomeBrew ...";
+            cout << "Ctags install failed" << endl;
+
+            return false;
+        }
+
         cmd = "brew install ctags";
         InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
-
-        return true;
     }
 
-    return false;
+    if ( check_ctags() )
+        return true;
+    else
+        return false;
 }

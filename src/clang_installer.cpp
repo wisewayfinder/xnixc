@@ -123,11 +123,26 @@ bool ClangInstaller::check_clang()
 {
     InstallHelper::examine_os( "To check Clang installed, this OS is invalid");
 
-    if ( get_clang_path( "c" ) == InstallHelper::FAILED || 
-            get_clang_path( "cpp" ) == InstallHelper::FAILED )
-        return false;
+    if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
+    {
+        if ( get_clang_path( "c" ) == InstallHelper::FAILED || 
+                get_clang_path( "cpp" ) == InstallHelper::FAILED )
+            return false;
+        else
+            return true;
+    }
+    else if ( InstallHelper::get_os() == InstallHelper::MAC )
+    {
+        string cmd = "xcode-select -p 2> /dev/null";
+        string result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+
+        if ( InstallHelper::FAILED == result )
+            return false;
+        else
+            return true;
+    }
     else
-        return true;
+        return false;
 }
 
 bool ClangInstaller::install_clang()
@@ -142,20 +157,24 @@ bool ClangInstaller::install_clang()
         cout << "Clang is already installed ..." << endl;
         cout << "Clang install complete" << endl;
 
-        cmd = "which clang";
-        result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
-        if ( InstallHelper::FAILED == result )
+        if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
         {
-            cmd = "sudo ln -s " + get_clang_path( "c" ) + " /usr/bin/clang";
-            InstallHelper::xnix_cmd_exec( cmd.c_str(), false);
-        }
+            cmd = "which clang";
+            result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+            if ( InstallHelper::FAILED == result )
+            {
+                cmd = "sudo ln -s " + get_clang_path( "c" ) + " /usr/bin/clang";
+                InstallHelper::xnix_cmd_exec( cmd.c_str(), false);
+            }
 
-        cmd = "which clang++";
-        result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
-        if ( InstallHelper::FAILED == result )
-        {
-            cmd = "sudo ln -s " + get_clang_path( "cpp" ) + " /usr/bin/clang++";
-            InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
+            cmd = "which clang++";
+            result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
+            if ( InstallHelper::FAILED == result )
+            {
+                cmd = "sudo ln -s " + get_clang_path( "cpp" ) + 
+                    " /usr/bin/clang++";
+                InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
+            }
         }
 
         return true;
@@ -198,9 +217,15 @@ bool ClangInstaller::install_clang()
 
         cmd = "sudo ln -s /usr/bin/clang++-3.8 /usr/bin/clang++";
         InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
-
-        return true;
+    }
+    else if ( InstallHelper::get_os() == InstallHelper::MAC )
+    {
+        cmd = "xcode-select --install";
+        InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
     }
 
-    return false;
+    if ( check_clang() )
+        return true;
+    else
+        return false;
 }
