@@ -5,6 +5,7 @@
 #include "install_helper.h"
 #include "clang_installer.h"
 #include "brew_installer.h"
+#include "mvim_installer.h"
 #include "c_make_installer.h"
 #include "cscope_installer.h"
 #include "ctags_installer.h"
@@ -61,7 +62,7 @@ bool InstallUi::init_cmd_list()
                     );
         }
 
-        if ( ClangInstaller::check_clang() )
+        if ( ClangInstaller::check_clang() && CMakeInstaller::check_c_make() )
         {
             cmd_list.push_back( CmdInfo( "YouCompleteMe", YcmInstaller::chk_ycm,
                        YcmInstaller::install_ycm ) );
@@ -85,6 +86,8 @@ bool InstallUi::init_cmd_list()
     {
         cmd_list.push_back( CmdInfo( "homebrew", BrewInstaller::chk_brew, 
                     BrewInstaller::install_brew ) );
+        cmd_list.push_back( CmdInfo( "MacVim", MvimInstaller::chk_mvim, 
+                    MvimInstaller::install_mvim ) );
 
         if ( BrewInstaller::chk_brew() )
         {
@@ -99,7 +102,8 @@ bool InstallUi::init_cmd_list()
                         CscopeInstaller::install_cscope ) );
 
             if ( CtagsInstaller::check_ctags() && 
-                    CscopeInstaller::check_cscope() )
+                    CscopeInstaller::check_cscope() && 
+                    MvimInstaller::chk_mvim() )
             {
                 cmd_list.push_back( 
                         CmdInfo( 
@@ -111,10 +115,14 @@ bool InstallUi::init_cmd_list()
                         );
             }
 
-        }
-
-        if ( ClangInstaller::check_clang() )
-        {
+            if ( ClangInstaller::check_clang() &&
+                    CMakeInstaller::check_c_make() &&
+                    MvimInstaller::chk_mvim() )
+            {
+                cmd_list.push_back( CmdInfo( "YouCompleteMe",
+                            YcmInstaller::chk_ycm,
+                            YcmInstaller::install_ycm ) );
+            }
         }
     }
     else
@@ -171,11 +179,13 @@ bool InstallUi::install_cmd( int cmd_num )
         else if ( InstallHelper::get_os() == InstallHelper::MAC )
         {
             BrewInstaller::install_brew();
+            MvimInstaller::install_mvim();
             ClangInstaller::install_clang();
             CMakeInstaller::install_c_make();
             CtagsInstaller::install_ctags();
             CscopeInstaller::install_cscope();
             VimManager::vim_configure();
+            YcmInstaller::install_ycm();
         }
 
         return true;
