@@ -50,7 +50,7 @@ bool InstallUi::init_cmd_list()
         cmd_list.push_back( CmdInfo( "cscope", CscopeInstaller::check_cscope,
                    CscopeInstaller::install_cscope ) );
 
-        if ( CscopeInstaller::check_cscope() && CtagsInstaller::check_ctags() )
+        if ( CtagsInstaller::check_ctags() && CscopeInstaller::check_cscope() )
         {
             cmd_list.push_back( 
                     CmdInfo( 
@@ -97,6 +97,24 @@ bool InstallUi::init_cmd_list()
             cmd_list.push_back( CmdInfo( "cscope", 
                         CscopeInstaller::check_cscope, 
                         CscopeInstaller::install_cscope ) );
+
+            if ( CtagsInstaller::check_ctags() && 
+                    CscopeInstaller::check_cscope() )
+            {
+                cmd_list.push_back( 
+                        CmdInfo( 
+                            "vim config( not installed indication is not " \
+                            "correct )",
+                            return_false,
+                            VimManager::vim_configure 
+                            ) 
+                        );
+            }
+
+        }
+
+        if ( ClangInstaller::check_clang() )
+        {
         }
     }
     else
@@ -157,6 +175,7 @@ bool InstallUi::install_cmd( int cmd_num )
             CMakeInstaller::install_c_make();
             CtagsInstaller::install_ctags();
             CscopeInstaller::install_cscope();
+            VimManager::vim_configure();
         }
 
         return true;
