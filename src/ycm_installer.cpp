@@ -171,7 +171,7 @@ bool YcmInstaller::ycm_extra_conf_configure()
     string cmd;
     string result;
 
-    cmd = "cp -rf ../resource/ycm_extra_conf_set/ ~/.vim/";
+    cmd = "cp -rf ../resource/ycm_extra_conf_set/ ~/.vim/ycm_extra_conf_set/";
     result = InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     if ( result == InstallHelper::FAILED )
