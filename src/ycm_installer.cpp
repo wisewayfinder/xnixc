@@ -171,7 +171,12 @@ bool YcmInstaller::ycm_extra_conf_configure()
     string cmd;
     string result;
 
-    cmd = "cp -rf ../resource/ycm_extra_conf_set/ ~/.vim/ycm_extra_conf_set/";
+    if ( InstallHelper::get_os() == InstallHelper::UBUNTU )
+        cmd = "cp -rf ../resource/ycm_extra_conf_set/ ~/.vim/";
+    else if ( InstallHelper::get_os() == InstallHelper::MAC )
+        cmd = "cp -rf ../resource/ycm_extra_conf_set/ ~/.vim/ycm_extra_conf_set/";
+    else
+        return false;
     result = InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     if ( result == InstallHelper::FAILED )
