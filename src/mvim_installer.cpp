@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 #include "install_helper.h"
 #include "str_util.h"
 #include "brew_installer.h"
