@@ -28,7 +28,6 @@ bool YcmInstaller::chk_ycm()
     vector< string >::iterator it;
 
     files.push_back( "clang_archives/" );
-    files.push_back( "libclang.so.*" );
     files.push_back( "PYTHON_USED_DURING_BUILDING" );
     files.push_back( "ycm_core.so" );
 
@@ -178,8 +177,8 @@ bool YcmInstaller::ycm_extra_conf_configure()
         InstallHelper::terminate( "Can't copy ycm_extra_conf_set directory" );
     else
     {
-        set_extra_conf("c");
-        set_extra_conf("cpp");
+        set_extra_conf( "c" );
+        set_extra_conf( "cpp" );
 
         return true;
     }

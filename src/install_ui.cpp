@@ -123,6 +123,20 @@ bool InstallUi::init_cmd_list()
                             YcmInstaller::chk_ycm,
                             YcmInstaller::install_ycm ) );
             }
+
+            if ( ClangInstaller::check_clang() && 
+                    CtagsInstaller::check_ctags() &&
+                    CscopeInstaller::check_cscope() &&
+                    MvimInstaller::chk_mvim() && YcmInstaller::chk_ycm() )
+            {
+                cmd_list.push_back( 
+                        CmdInfo( 
+                            "xnixc( not installed indication is not correct )",
+                            return_false, 
+                            XnixcInstaller::install_xnixc 
+                            ) 
+                        );
+            }
         }
     }
     else
