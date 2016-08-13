@@ -214,6 +214,7 @@ filetype plugin indent on    " required
 "let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf=1
 let g:ycm_min_num_of_chars_for_completion=1 " Char num start completion
+let g:ycm_python_binary_path=##python_path
 
 nnoremap <leader>g :YcmCompleter GoTo<CR>
 nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
