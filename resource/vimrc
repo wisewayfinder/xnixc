@@ -194,6 +194,9 @@ Plugin 'taglist.vim'
 Plugin 'git://github.com/xolox/vim-easytags.git'
 Plugin 'git://github.com/xolox/vim-misc.git'
 
+" plugin show git diff
+Plugin 'git://github.com/airblade/vim-gitgutter.git'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
