@@ -351,7 +351,6 @@ function! CscopeUpdate()
     endwhile
 endfunction
 
-autocmd BufEnter * call CscopeUpdate()
 autocmd BufWritePost * call CscopeUpdate()
 set csprg=##cscope_path
 set csto=0
