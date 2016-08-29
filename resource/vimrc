@@ -1,11 +1,22 @@
 " -------------------- Own Setting Start ---------------------------------------
+function! EndSt()
+    let ext = &filetype
+
+    if (ext == 'c' || ext == 'cpp')
+        return ';'
+    elseif (ext == 'python')
+        return ':'
+    else
+        return ''
+endfunction
+
 let mapleader=";"
 inoremap <leader>e <Esc>
 inoremap <leader>o <Esc>o
 inoremap <leader>O <Esc>O
 inoremap <leader>w <ESC>:w<CR>a
 nnoremap <leader>w :w<CR>
-inoremap <leader>f <ESC>$a;<CR>
+inoremap <leader>f <C-O>A<C-R>=EndSt()<C-M><CR>
 nnoremap <leader>s :vimgrep /
 nnoremap <leader>] :cnext<CR>
 nnoremap <leader>[ :cprevious<CR>
