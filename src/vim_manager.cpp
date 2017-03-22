@@ -59,6 +59,23 @@ bool VimManager::vimrc_configure()
         StrUtil::str_replace( result, "/", "\\/" ) + "\\\"/g\" ~/.vimrc";
     InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
+    cmd = "which python3";
+    result = StrUtil::remove_lf( InstallHelper::xnix_cmd_exec( cmd.c_str() ) );
+
+    if ( result == InstallHelper::FAILED )
+    {
+        cmd = "which python";
+        result = StrUtil::remove_lf( 
+                InstallHelper::xnix_cmd_exec(  cmd.c_str() ) );
+
+        if ( result == InstallHelper::FAILED )
+            InstallHelper::terminate( "python is not installed" );
+    }
+
+    cmd = "sed -i -e \"s/##python_path/\\\"" + 
+        StrUtil::str_replace( result, "/", "\\/" ) + "\\\"/g\" ~/.vimrc";
+    InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
+
     return true;
 }
 
