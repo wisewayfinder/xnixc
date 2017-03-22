@@ -14,6 +14,10 @@ let mapleader=";"
 inoremap <leader>e <Esc>
 inoremap <leader>o <Esc>o
 inoremap <leader>O <Esc>O
+inoremap <leader>4 <Esc>$a
+nnoremap <leader>4 $
+inoremap <leader>6 <Esc>^i
+nnoremap <leader>6 ^
 inoremap <leader>w <ESC>:w<CR>a
 nnoremap <leader>w :w<CR>
 inoremap <leader>f <C-O>A<C-R>=EndSt()<C-M><CR>
