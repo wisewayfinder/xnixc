@@ -39,7 +39,7 @@ set title
 set colorcolumn=81
 set cursorline
 set autochdir
-set clipboard=unnamed;
+set clipboard=unnamed
 
 highlight OverLength ctermbg=blue ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
