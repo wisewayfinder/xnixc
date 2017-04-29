@@ -5,3 +5,4 @@ mkcscope*
 tags
 *.swp
 *.bak
+build/*
