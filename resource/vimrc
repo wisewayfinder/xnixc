@@ -2,7 +2,7 @@
 function! EndSt()
     let ext = &filetype
 
-    if (ext == 'c' || ext == 'cpp')
+    if (ext == 'c' || ext == 'cpp' || ext == 'java')
         return ';'
     elseif (ext == 'python')
         return ':'
