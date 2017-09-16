@@ -29,7 +29,7 @@ set nu
 set tabstop=4
 set shiftwidth=4
 set sts=4
-au Bufenter *.\(rb\|ruby\|py\) set ts=2 sw=2 sts=2
+au Bufenter *.\(rb\|ruby\|py\|js\) set ts=2 sw=2 sts=2
 set expandtab
 set smartindent
 set ignorecase
