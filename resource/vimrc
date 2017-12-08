@@ -41,6 +41,9 @@ set cursorline
 set autochdir
 set clipboard=unnamed
 
+" indentation config
+set cino+=(0
+
 highlight OverLength ctermbg=blue ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 set laststatus=2
