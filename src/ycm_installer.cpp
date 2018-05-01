@@ -202,11 +202,11 @@ bool YcmInstaller::restore_ycm()
     if ( !ycm_extra_conf_configure() )
         InstallHelper::terminate( "ycm_extra_conf_configure failed" );
 
-    cmd = "which python";
+    cmd = "which python3";
     result = InstallHelper::xnix_cmd_exec( cmd.c_str() );
     if ( result == InstallHelper::FAILED )
     {
-        InstallHelper::terminate( "Since python is not installed in this " \
+        InstallHelper::terminate( "Since python3 is not installed in this " \
                 "system, can't proceed install(restore) Ycm" );
     }
 
@@ -216,7 +216,8 @@ bool YcmInstaller::restore_ycm()
         InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
     }
 
-    cmd = "cd ~/.vim/bundle/YouCompleteMe && ./install.py --clang-completer";
+    cmd = "cd ~/.vim/bundle/YouCompleteMe && "\
+          "python3 install.py --clang-completer";
     InstallHelper::xnix_cmd_exec( cmd.c_str(), false );
 
     return true;
