@@ -9,7 +9,7 @@ from src.install.check.PkgInstallCheckService import PkgInstallCheckService
 class Ubuntu2004PkgInstallCheckService(PkgInstallCheckService):
     def _define_behavior(self) -> Dict[PkgCatalog, Callable[[None], bool]]:
         return {
-            PkgCatalog.CLANG: lambda _: subprocess.run(['which', 'clang-10'], capture_output=True).returncode == 0,
+            PkgCatalog.CLANG: lambda _: subprocess.run(['which', 'clang-11'], capture_output=True).returncode == 0,
             PkgCatalog.VIM: lambda _: subprocess.run(['which', 'vim'], capture_output=True).returncode == 0,
             PkgCatalog.GIT: lambda _: subprocess.run(['which', 'git'], capture_output=True).returncode == 0,
             PkgCatalog.CTAGS: lambda _: subprocess.run(['which', 'ctags'], capture_output=True).returncode == 0,
