@@ -3,7 +3,7 @@ from src.install.installer.PkgInstaller import PkgInstaller
 
 class Ubuntu2004CtagsInstaller(PkgInstaller):
     def one_line_description(self) -> str:
-        raise NotImplementedError
+        return 'Ctags'
 
     def install(self) -> None:
         raise NotImplementedError
