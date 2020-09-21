@@ -17,6 +17,7 @@ class InstallerUI:
         super().__init__()
 
     def draw(self):
+        self.__refresh_install_dict()
         while True:
             self.__print_ui()
             try:
