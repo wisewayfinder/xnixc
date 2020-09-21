@@ -14,9 +14,12 @@ if __name__ == '__main__':
         install_service_discovery.pkg_dependency_dag_provider(),
         install_service_discovery.pkg_install_check_service()
     )
-    installer_list: List[PkgInstaller] = list(
-        map(lambda it: install_service_discovery.installer_resolver().execute(it),
-            install_candidates))
+    installer_list: List[PkgInstaller] = sorted(
+        list(
+            map(
+                lambda it: install_service_discovery.installer_resolver().execute(it),
+                install_candidates)),
+        key=lambda it: it.one_line_description())
     installer_dict: Dict[int, PkgInstaller] = {}
     for idx in range(0, len(installer_list)):
         installer_dict[idx + 1] = installer_list[idx]
