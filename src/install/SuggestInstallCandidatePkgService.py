@@ -25,6 +25,7 @@ class SuggestInstallCandidatePkgService:
             else:
                 if len(list(filter(lambda it: it not in already_installed,
                                    whole_catalogs_to_install.get_upstreams(installed_check_item)))) == 0:
-                    install_candidates.add(installed_check_item)
+                    if installed_check_item not in already_installed:
+                        install_candidates.add(installed_check_item)
 
         return install_candidates

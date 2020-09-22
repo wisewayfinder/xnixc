@@ -13,7 +13,7 @@ class InstallerUI:
 
     def __init__(self, install_service_discovery: InstallServiceDiscovery):
         self.__install_service_discovery = install_service_discovery
-        self.__install_dict: Dict[int, PkgInstaller] = self.__refresh_install_dict()
+        self.__install_dict: Dict[int, PkgInstaller] = {}
         super().__init__()
 
     def draw(self):
@@ -30,7 +30,7 @@ class InstallerUI:
                 continue
             self.__run_command(cmd)
 
-    def __refresh_install_dict(self) -> Dict[int, PkgInstaller]:
+    def __refresh_install_dict(self):
         install_candidates: Set[PkgCatalog] = SuggestInstallCandidatePkgService.suggest(
             self.__install_service_discovery.pkg_dependency_dag_provider(),
             self.__install_service_discovery.pkg_install_check_service()
@@ -44,7 +44,7 @@ class InstallerUI:
         installer_dict: Dict[int, PkgInstaller] = {}
         for idx in range(0, len(installer_list)):
             installer_dict[idx + 1] = installer_list[idx]
-        return installer_dict
+        self.__install_dict = installer_dict
 
     @staticmethod
     def __input_cmd() -> int:
