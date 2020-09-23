@@ -5,11 +5,13 @@ from src.install.PkgCatalog import PkgCatalog
 from src.install.SuggestInstallCandidatePkgService import SuggestInstallCandidatePkgService
 from src.install.installer.PkgInstaller import PkgInstaller
 from src.install.installer.ExitInstaller import ExitInstaller
+from src.install.installer.SudoInstaller import SudoInstaller
 
 
 class InstallerUI:
+    __sudo_cmd_code = 0
     __exit_cmd_code = -1
-    __exist_installer = ExitInstaller()
+    __sudo_installer = SudoInstaller()
 
     def __init__(self, install_service_discovery: InstallServiceDiscovery):
         self.__install_service_discovery = install_service_discovery
@@ -41,7 +43,10 @@ class InstallerUI:
                     lambda it: self.__install_service_discovery.installer_resolver().execute(it),
                     install_candidates)),
             key=lambda it: it.one_line_description())
-        installer_dict: Dict[int, PkgInstaller] = {}
+        installer_dict: Dict[int, PkgInstaller] = {
+            self.__sudo_cmd_code: self.__sudo_installer,
+            self.__exit_cmd_code: ExitInstaller()
+        }
         for idx in range(0, len(installer_list)):
             installer_dict[idx + 1] = installer_list[idx]
         self.__install_dict = installer_dict
@@ -60,22 +65,18 @@ class InstallerUI:
             print('[{:-3} ] {}'.format(
                 cmd,
                 self.__install_dict[cmd].one_line_description()))
+        print('')
+        for cmd in sorted(list(filter(lambda it: it <= 0, self.__install_dict.keys())), reverse=True):
+            print('[{:-3} ] {}'.format(
+                cmd,
+                self.__install_dict[cmd].one_line_description()))
 
-        print('[{:-3} ] {}'.format(
-            self.__exit_cmd_code,
-            ExitInstaller().one_line_description()))
-            
         print('\nselect number to install >> ', end='')
 
     def __check_cmd_valid(self, cmd):
-        if cmd == self.__exit_cmd_code:
-            return
         if cmd not in self.__install_dict.keys():
             raise KeyError(f"command {cmd} is not exist in list")
 
     def __run_command(self, cmd: int):
-        if cmd == self.__exit_cmd_code:
-            self.__exist_installer.install()
-        else:
-            installer = self.__install_dict[cmd]
-            installer.install()
+        installer = self.__install_dict[cmd]
+        installer.install()
