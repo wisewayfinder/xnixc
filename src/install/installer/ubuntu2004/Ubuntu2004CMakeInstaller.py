@@ -34,7 +34,7 @@ class Ubuntu2004CMakeInstaller(PkgInstaller):
         os.system(f"wget -P .tmp https://github.com/Kitware/CMake/releases/download/v{self.__cmake_version}/cmake-{self.__cmake_version}.tar.gz")
         os.system(f"cd ./.tmp && tar -xvzf cmake-{self.__cmake_version}.tar.gz")
         os.system('sudo apt-get install libssl-dev')  # to prevent https://stackoverflow.com/questions/16248775/cmake-not-able-to-find-openssl-library issue
-        os.system(f"cd ./.tmp/cmake-{self.__cmake_version} && ./configure")
+        os.system(f"export CC={clang_c_location} && export CXX={clang_cpp_location} && cd ./.tmp/cmake-{self.__cmake_version} && ./configure")
         os.system(f"cd ./.tmp/cmake-{self.__cmake_version} && make")
         os.system('sudo apt-get install checkinstall')
         os.system(f"cd ./.tmp/cmake-{self.__cmake_version} && checkinstall")
