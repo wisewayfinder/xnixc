@@ -26,15 +26,18 @@ class Ubuntu2004CMakeInstaller(PkgInstaller):
 
     def __install_with_clang_11(self) -> None:
         clang_c_location = subprocess.check_output(['which', 'clang-11']).decode(self.__encoding).strip()
-        os.system(f"export CC={clang_c_location}")
         clang_cpp_location = subprocess.check_output(['which', 'clang++-11']).decode(self.__encoding).strip()
-        os.system(f"export CXX={clang_cpp_location}")
-        os.system('sudo apt-get install make')
-        os.system('mkdir .tmp')
-        os.system(f"wget -P .tmp https://github.com/Kitware/CMake/releases/download/v{self.__cmake_version}/cmake-{self.__cmake_version}.tar.gz")
-        os.system(f"cd ./.tmp && tar -xvzf cmake-{self.__cmake_version}.tar.gz")
+        os.system('sudo apt-get install -y make')
+        os.system(f"mkdir {Ubuntu2004CMakeInstaller.__tmp_path()}")
+        os.system(f"wget -P {Ubuntu2004CMakeInstaller.__tmp_path()} https://github.com/Kitware/CMake/releases/download/v{self.__cmake_version}/cmake-{self.__cmake_version}.tar.gz")
+        os.system(f"cd {Ubuntu2004CMakeInstaller.__tmp_path()} && tar -xvzf cmake-{self.__cmake_version}.tar.gz")
         os.system('sudo apt-get install libssl-dev')  # to prevent https://stackoverflow.com/questions/16248775/cmake-not-able-to-find-openssl-library issue
         os.system(f"export CC={clang_c_location} && export CXX={clang_cpp_location} && cd ./.tmp/cmake-{self.__cmake_version} && ./configure")
-        os.system(f"cd ./.tmp/cmake-{self.__cmake_version} && make")
-        os.system('sudo apt-get install checkinstall')
-        os.system(f"cd ./.tmp/cmake-{self.__cmake_version} && checkinstall")
+        os.system(f"cd {Ubuntu2004CMakeInstaller.__tmp_path()}/cmake-{self.__cmake_version} && make")
+        os.system('sudo apt-get install -y checkinstall')
+        os.system(f"cd {Ubuntu2004CMakeInstaller.__tmp_path()}/cmake-{self.__cmake_version} && checkinstall -y")
+        os.system(f"rm -rf {Ubuntu2004CMakeInstaller.__tmp_path()}")
+
+    @staticmethod
+    def __tmp_path() -> str:
+        return './.tmp'
