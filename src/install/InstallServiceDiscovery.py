@@ -1,3 +1,5 @@
+from typing import Optional
+
 from src.utils.os.OSProfile import OSProfile
 from src.install.check.PkgInstallCheckService import PkgInstallCheckService
 from src.install.check.Ubuntu2004PkgInstallCheckService import Ubuntu2004PkgInstallCheckService
@@ -22,9 +24,9 @@ class InstallServiceDiscovery:
             return Ubuntu2004PkgDependencyDagProvider()
         self.__raise_unknown_os_error()
 
-    def installer_resolver(self) -> PkgInstallerResolver:
+    def installer_resolver(self, sudo_password: Optional[str] = None) -> PkgInstallerResolver:
         if self.__is_ubuntu_2004():
-            return Ubuntu2004PkgInstallerResolver()
+            return Ubuntu2004PkgInstallerResolver() if sudo_password is None else Ubuntu2004PkgInstallerResolver(sudo_password)
         self.__raise_unknown_os_error()
 
     def __is_ubuntu_2004(self) -> bool:

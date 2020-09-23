@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 from src.install.installer.PkgInstaller import PkgInstaller
 
@@ -8,8 +9,8 @@ from src.utils.os.SudoRunner import SudoRunner
 
 
 class Ubuntu2004ClangInstaller(PkgInstaller):
-    def __init__(self, sudo_password: str = None) -> None:
-        self.__sudo_pw = sudo_password
+    def __init__(self, sudo_password: Optional[str] = None) -> None:
+        self.__sudo_pw: Optional[str] = sudo_password
         super().__init__()
 
     def one_line_description(self) -> str:

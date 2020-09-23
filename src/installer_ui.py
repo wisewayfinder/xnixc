@@ -40,7 +40,7 @@ class InstallerUI:
         installer_list: List[PkgInstaller] = sorted(
             list(
                 map(
-                    lambda it: self.__install_service_discovery.installer_resolver().execute(it),
+                    lambda it: self.__install_service_discovery.installer_resolver(self.__sudo_installer.get_pw()).execute(it),
                     install_candidates)),
             key=lambda it: it.one_line_description())
         installer_dict: Dict[int, PkgInstaller] = {

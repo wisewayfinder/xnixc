@@ -1,4 +1,6 @@
 from getpass import getpass
+from typing import Optional
+
 from src.install.installer.PkgInstaller import PkgInstaller
 from src.utils.os.SudoRunner import SudoRunner
 
@@ -6,7 +8,7 @@ from src.utils.os.SudoRunner import SudoRunner
 class SudoInstaller(PkgInstaller):
     def __init__(self) -> None:
         self.__is_set: bool = False
-        self.__password: str = ''
+        self.__password: Optional[str] = None
         super().__init__()
 
     def one_line_description(self) -> str:
@@ -33,6 +35,9 @@ class SudoInstaller(PkgInstaller):
                 print('set password successfully done')
             except ValueError as e:
                 print(e)
+
+    def get_pw(self) -> Optional[str]:
+        return self.__password
 
     @staticmethod
     def __check_password_right(tmp_pw: str):

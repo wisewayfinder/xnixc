@@ -1,4 +1,4 @@
-from typing import Dict, Callable
+from typing import Dict, Callable, Optional
 
 from src.install.PkgCatalog import PkgCatalog
 from src.install.installer.PkgInstaller import PkgInstaller
@@ -19,9 +19,13 @@ from src.install.installer.ubuntu2004.Ubuntu2004YcmInstaller import Ubuntu2004Yc
 
 
 class Ubuntu2004PkgInstallerResolver(PkgInstallerResolver):
+    def __init__(self, sudo_password: Optional[str] = None) -> None:
+        self.__sudo_pw: Optional[str] = sudo_password
+        super().__init__()
+
     def _define_behavior(self) -> Dict[PkgCatalog, Callable[[None], PkgInstaller]]:
         return {
-            PkgCatalog.CLANG: lambda _: Ubuntu2004ClangInstaller(),
+            PkgCatalog.CLANG: lambda _: Ubuntu2004ClangInstaller() if self.__if_pw_none() else Ubuntu2004ClangInstaller(self.__sudo_pw),
             PkgCatalog.VIM: lambda _: Ubuntu2004VimInstaller(),
             PkgCatalog.GIT: lambda _: Ubuntu2004GitInstaller(),
             PkgCatalog.CTAGS: lambda _: Ubuntu2004CtagsInstaller(),
@@ -35,3 +39,6 @@ class Ubuntu2004PkgInstallerResolver(PkgInstallerResolver):
             PkgCatalog.VIM_AIRLINE: lambda _: Ubuntu2004VimAirlineInstaller(),
             PkgCatalog.XNIXC: lambda _: Ubuntu2004XnixcInstaller(),
         }
+
+    def __if_pw_none(self) -> bool:
+        return self.__sudo_pw is None
