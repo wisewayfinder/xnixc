@@ -1,8 +1,9 @@
-from typing import Dict, Callable, Optional
+from typing import Dict, Callable, Optional, Type
 
 from src.install.PkgCatalog import PkgCatalog
 from src.install.installer.PkgInstaller import PkgInstaller
 from src.install.installer.PkgInstallerResolver import PkgInstallerResolver
+from src.install.installer.WithPwPkgInstaller import WithPwPkgInstaller
 from src.install.installer.ubuntu2004.Ubuntu2004CMakeInstaller import Ubuntu2004CMakeInstaller
 from src.install.installer.ubuntu2004.Ubuntu2004ClangInstaller import Ubuntu2004ClangInstaller
 from src.install.installer.ubuntu2004.Ubuntu2004CscopeInstaller import Ubuntu2004CscopeInstaller
@@ -25,7 +26,7 @@ class Ubuntu2004PkgInstallerResolver(PkgInstallerResolver):
 
     def _define_behavior(self) -> Dict[PkgCatalog, Callable[[None], PkgInstaller]]:
         return {
-            PkgCatalog.CLANG: lambda _: Ubuntu2004ClangInstaller() if self.__if_pw_none() else Ubuntu2004ClangInstaller(self.__sudo_pw),
+            PkgCatalog.CLANG: lambda _: self.__installer_with_pw(Ubuntu2004ClangInstaller),
             PkgCatalog.VIM: lambda _: Ubuntu2004VimInstaller(),
             PkgCatalog.GIT: lambda _: Ubuntu2004GitInstaller(),
             PkgCatalog.CTAGS: lambda _: Ubuntu2004CtagsInstaller(),
@@ -39,6 +40,12 @@ class Ubuntu2004PkgInstallerResolver(PkgInstallerResolver):
             PkgCatalog.VIM_AIRLINE: lambda _: Ubuntu2004VimAirlineInstaller(),
             PkgCatalog.XNIXC: lambda _: Ubuntu2004XnixcInstaller(),
         }
+
+    def __installer_with_pw(self, installer_type: Type[WithPwPkgInstaller]) -> WithPwPkgInstaller:
+        if self.__sudo_pw is None:
+            return installer_type()
+        else:
+            return installer_type(self.__sudo_pw)
 
     def __if_pw_none(self) -> bool:
         return self.__sudo_pw is None

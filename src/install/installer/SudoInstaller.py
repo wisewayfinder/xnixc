@@ -12,7 +12,10 @@ class SudoInstaller(PkgInstaller):
         super().__init__()
 
     def one_line_description(self) -> str:
-        return "Caching 'su' password to made other task automatically"
+        if self.__is_set:
+            return "Caching 'su' password successfully done. Do you want reset?"
+        else:
+            return "Try Caching 'su' password to made other task automatically"
 
     def install(self) -> None:
         if not self.__is_set:
