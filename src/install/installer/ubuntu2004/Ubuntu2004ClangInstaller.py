@@ -1,30 +1,22 @@
 import os
 from typing import Optional
 
-from src.install.installer.PkgInstaller import PkgInstaller
+from src.install.installer.WithPwPkgInstaller import WithPwPkgInstaller
 
 
-# https://apt.llvm.org/
-from src.utils.os.SudoRunner import SudoRunner
-
-
-class Ubuntu2004ClangInstaller(PkgInstaller):
+class Ubuntu2004ClangInstaller(WithPwPkgInstaller):
     def __init__(self, sudo_password: Optional[str] = None) -> None:
-        self.__sudo_pw: Optional[str] = sudo_password
-        super().__init__()
+        super().__init__(sudo_password)
 
     def one_line_description(self) -> str:
         return 'Clang'
 
     def install(self):
+        # https://apt.llvm.org/
         os.system(f"mkdir {Ubuntu2004ClangInstaller.__tmp_path()}")
         os.system(f"cd {Ubuntu2004ClangInstaller.__tmp_path()} && wget https://apt.llvm.org/llvm.sh")
         os.system(f"cd {Ubuntu2004ClangInstaller.__tmp_path()} && chmod +x llvm.sh")
-        llvm_install_cmd = f"cd {Ubuntu2004ClangInstaller.__tmp_path()} && sudo ./llvm.sh {Ubuntu2004ClangInstaller.clang_version()}"
-        if self.__sudo_pw is None:
-            os.system(llvm_install_cmd)
-        else:
-            SudoRunner.run(llvm_install_cmd, self.__sudo_pw)
+        self._do_with_pw(f"cd {Ubuntu2004ClangInstaller.__tmp_path()} && sudo ./llvm.sh {Ubuntu2004ClangInstaller.clang_version()}")
         os.system(f"rm -rf {Ubuntu2004ClangInstaller.__tmp_path()}")
 
     @staticmethod
