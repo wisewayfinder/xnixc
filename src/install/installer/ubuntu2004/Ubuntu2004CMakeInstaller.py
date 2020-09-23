@@ -27,15 +27,15 @@ class Ubuntu2004CMakeInstaller(WithPwPkgInstaller):
     def __install_with_clang_11(self) -> None:
         clang_c_location = subprocess.check_output(['which', 'clang-11']).decode(self.__encoding).strip()
         clang_cpp_location = subprocess.check_output(['which', 'clang++-11']).decode(self.__encoding).strip()
-        self._do_with_pw('sudo apt-get install -y make')
+        self._sudo_with_pw('sudo apt-get install -y make')
         os.system(f"mkdir {Ubuntu2004CMakeInstaller.__tmp_path()}")
         os.system(f"wget -P {Ubuntu2004CMakeInstaller.__tmp_path()} https://github.com/Kitware/CMake/releases/download/v{self.__cmake_version}/cmake-{self.__cmake_version}.tar.gz")
         os.system(f"cd {Ubuntu2004CMakeInstaller.__tmp_path()} && tar -xvzf cmake-{self.__cmake_version}.tar.gz")
-        self._do_with_pw('sudo apt-get install libssl-dev')  # to prevent https://stackoverflow.com/questions/16248775/cmake-not-able-to-find-openssl-library issue
+        self._sudo_with_pw('sudo apt-get install libssl-dev')  # to prevent https://stackoverflow.com/questions/16248775/cmake-not-able-to-find-openssl-library issue
         os.system(f"export CC={clang_c_location} && export CXX={clang_cpp_location} && cd ./.tmp/cmake-{self.__cmake_version} && ./configure")
         os.system(f"cd {Ubuntu2004CMakeInstaller.__tmp_path()}/cmake-{self.__cmake_version} && make")
-        self._do_with_pw('sudo apt-get install -y checkinstall')
-        os.system(f"cd {Ubuntu2004CMakeInstaller.__tmp_path()}/cmake-{self.__cmake_version} && checkinstall -y")
+        self._sudo_with_pw('sudo apt-get install -y checkinstall')
+        self._sudo_with_pw(f"cd {Ubuntu2004CMakeInstaller.__tmp_path()}/cmake-{self.__cmake_version} && sudo checkinstall -y")
         os.system(f"rm -rf {Ubuntu2004CMakeInstaller.__tmp_path()}")
 
     @staticmethod

@@ -11,5 +11,5 @@ class WithPwPkgInstaller(PkgInstaller, metaclass=ABCMeta):
         self.__sudo_pw: Optional[str] = sudo_password
         super().__init__()
 
-    def _do_with_pw(self, cmd: str):
+    def _sudo_with_pw(self, cmd: str):
         os.system(cmd) if self.__sudo_pw is None else SudoRunner.run(cmd, self.__sudo_pw)
