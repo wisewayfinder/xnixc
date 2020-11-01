@@ -29,7 +29,7 @@ class Ubuntu2004PkgInstallerResolver(PkgInstallerResolver):
             PkgCatalog.CLANG: lambda _: self.__installer_with_pw(Ubuntu2004ClangInstaller),
             PkgCatalog.VIM: lambda _: Ubuntu2004VimInstaller(),
             PkgCatalog.GIT: lambda _: Ubuntu2004GitInstaller(),
-            PkgCatalog.CTAGS: lambda _: Ubuntu2004CtagsInstaller(),
+            PkgCatalog.CTAGS: lambda _: self.__installer_with_pw(Ubuntu2004CtagsInstaller),
             PkgCatalog.CMAKE: lambda _: self.__installer_with_pw(Ubuntu2004CMakeInstaller),
             PkgCatalog.VUNDLE: lambda _: Ubuntu2004VundleInstaller(),
             PkgCatalog.YCM: lambda _: Ubuntu2004YcmInstaller(),
