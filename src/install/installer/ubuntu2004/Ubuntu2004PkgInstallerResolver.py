@@ -34,7 +34,7 @@ class Ubuntu2004PkgInstallerResolver(PkgInstallerResolver):
             PkgCatalog.VUNDLE: lambda _: Ubuntu2004VundleInstaller(),
             PkgCatalog.YCM: lambda _: Ubuntu2004YcmInstaller(),
             PkgCatalog.NERD_TREE: lambda _: Ubuntu2004NerdTreeInstaller(),
-            PkgCatalog.CSCOPE: lambda _: Ubuntu2004CscopeInstaller(),
+            PkgCatalog.CSCOPE: lambda _: self.__installer_with_pw(Ubuntu2004CscopeInstaller),
             PkgCatalog.TAG_LIST: lambda _: Ubuntu2004TagListInstaller(),
             PkgCatalog.EASY_TAG: lambda _: Ubuntu2004EasyTagInstaller(),
             PkgCatalog.VIM_AIRLINE: lambda _: Ubuntu2004VimAirlineInstaller(),
