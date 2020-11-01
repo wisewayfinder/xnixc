@@ -10,6 +10,7 @@ class Ubuntu2004PkgDependencyDagProvider(PkgDependencyDagProvider):
         dag.add_node(PkgCatalog.CLANG)
         dag.add_node(PkgCatalog.VIM)
         dag.add_node(PkgCatalog.GIT)
+        dag.add_node(PkgCatalog.CSCOPE)
         dag.add_node(PkgCatalog.CTAGS)
 
         dag.add_node(PkgCatalog.CMAKE)
@@ -17,7 +18,6 @@ class Ubuntu2004PkgDependencyDagProvider(PkgDependencyDagProvider):
 
         dag.add_node(PkgCatalog.YCM)
         dag.add_node(PkgCatalog.NERD_TREE)
-        dag.add_node(PkgCatalog.CSCOPE)
         dag.add_node(PkgCatalog.TAG_LIST)
         dag.add_node(PkgCatalog.EASY_TAG)
         dag.add_node(PkgCatalog.VIM_AIRLINE)
@@ -27,11 +27,12 @@ class Ubuntu2004PkgDependencyDagProvider(PkgDependencyDagProvider):
         dag.connect_edge(PkgCatalog.CLANG, PkgCatalog.CMAKE)
         dag.connect_edge(PkgCatalog.VIM, PkgCatalog.VUNDLE)
         dag.connect_edge(PkgCatalog.GIT, PkgCatalog.VUNDLE)
+        dag.connect_edge(PkgCatalog.CSCOPE, PkgCatalog.VUNDLE)
+        dag.connect_edge(PkgCatalog.CTAGS, PkgCatalog.VUNDLE)
 
         dag.connect_edge(PkgCatalog.CLANG, PkgCatalog.YCM)
         dag.connect_edge(PkgCatalog.VUNDLE, PkgCatalog.YCM)
         dag.connect_edge(PkgCatalog.VUNDLE, PkgCatalog.NERD_TREE)
-        dag.connect_edge(PkgCatalog.VUNDLE, PkgCatalog.CSCOPE)
         dag.connect_edge(PkgCatalog.VUNDLE, PkgCatalog.TAG_LIST)
         dag.connect_edge(PkgCatalog.VUNDLE, PkgCatalog.EASY_TAG)
         dag.connect_edge(PkgCatalog.VUNDLE, PkgCatalog.VIM_AIRLINE)
